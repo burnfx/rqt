@@ -63,38 +63,56 @@ void applicationHandler::setRedGreen(int rgb) {
     }
 }
 
-void applicationHandler::setFile(char *str)
+void applicationHandler::setFile(char *file)
 {
-    qDebug() << "applicationHandler says: setReduction = " << str ;
+    qDebug() << "applicationHandler says: setReduction = " << file;
+    char *str;
+    strcpy(str, "-file");
+    strcat(str, file);
     sendR(&str);
 }
 
-void applicationHandler::setReduction(char *str)
+void applicationHandler::setReduction(char *reduction)
 {
-    qDebug() << "applicationHandler says: setReduction = " << str ;
+    qDebug() << "applicationHandler says: setReduction = " << reduction;
+    char *str;
+    strcpy(str, "-reduction");
+    strcat(str, reduction);
     sendR(&str);
 }
 
-void applicationHandler::setUpdateInterval(char *str)
+void applicationHandler::setUpdateInterval(char *updateInterval)
 {
-    qDebug() << "applicationHandler says: setUpdateIntervaln = " << str ;
+    qDebug() << "applicationHandler says: setUpdateIntervaln = " << updateInterval;
+    char *str;
+    strcpy(str, "-updateInterval");
+    strcat(str, updateInterval);
     sendR(&str);
 }
 
-void applicationHandler::setcDecay(char *str)
+void applicationHandler::setcDecay(char *cDecay)
 {
-    qDebug() << "applicationHandler says: setcDecay = " << str ;
+    qDebug() << "applicationHandler says: setcDecay = " << cDecay;
+    char *str;
+    strcpy(str, "-cDecay");
+    strcat(str, cDecay);
     sendR(&str);
 }
 
-void applicationHandler::setViewport_Offset(char *str)
+void applicationHandler::setViewport_Offset(char *offset)
 {
-    qDebug() << "applicationHandler says: Viewport_Offset = " << str ;
+    qDebug() << "applicationHandler says: setViewport_Offset = " << offset ;
+    char *str;
+    strcpy(str, "-viewport_Offset");
+    strcat(str, offset);
     sendR(&str);
 }
 
-void applicationHandler::setTranslateBack_Offset(char *str)
+void applicationHandler::setTranslateBack_Offset(char *offset)
 {
-    qDebug() << "applicationHandler says: TranslateBack_Offset = " << str ;
+    qDebug() << "applicationHandler says: setTranslateBack_Offset = " << offset ;
+    char *str;
+    strcpy(str, "-translateBack_Offset ");
+    strcat(str, offset);
     sendR(&str);
 }
