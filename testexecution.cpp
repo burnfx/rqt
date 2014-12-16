@@ -9,6 +9,13 @@
 
 #define maxTrackTime 10;
 
+// COMMANDS
+char* stop = "stop";
+char* pause = "pause";
+char* play = "play";
+char* next = "next";
+char* previous = "previous";
+
 TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TestExecution)
@@ -72,7 +79,7 @@ void TestExecution::on_okCMDB_clicked()
 {
     // make sure application also stops
     runState = 0;
-    appHND->stopTrack();
+    appHND->setControl(stop);
 
     //get data off all buttons
     //if a datapoint is missing set "uncomplete_flag"
@@ -140,7 +147,7 @@ void TestExecution::on_exitCMDB_clicked()
 {
     // make sure application also stops
     runState = 0;
-    appHND->stopTrack();
+    appHND->setControl(stop);
     // close
     this->close();
 }
@@ -184,15 +191,17 @@ void TestExecution::update()
 void TestExecution::on_playPauseCMDB_clicked()
 {
     runState = runState ^ 1;
-    appHND->playPauseTrack(runState);
+    // appHND->playPauseTrack(runState);
     if (runState)
     {
         ui->timeLBL->setText(QString::number(currentSeqCnt));
         timer->start(1000);
+        appHND->setControl(play);
     }
     else
     {
         ui->timeLBL->setText("paused");
+        appHND->setControl(pause);
     }
     updateCurrentSequence();
 }
@@ -202,7 +211,7 @@ void TestExecution::on_stopCMDB_clicked()
     runState = 0;
     currentSeqCnt = maxTrackTime;
     ui->timeLBL->setText("stopped");
-    appHND->stopTrack();
+    appHND->setControl(stop);
     updateCurrentSequence();
 }
 
