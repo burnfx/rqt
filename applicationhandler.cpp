@@ -1,6 +1,8 @@
 #include "applicationhandler.h"
 #include "client.h"
 
+#define MAX_BUF 50
+
 applicationHandler::applicationHandler()
 {
 
@@ -15,7 +17,6 @@ void applicationHandler::closeGUI()
 void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
 {
     qDebug() << "applicationHandler says: blockNum = " << blockNum << ", seqNum = " << seqNum;
-    //setFile(&str);
 
 }
 
@@ -65,54 +66,61 @@ void applicationHandler::setRedGreen(int rgb) {
 
 void applicationHandler::setFile(char *file)
 {
-    qDebug() << "applicationHandler says: setReduction = " << file;
-    char *str;
-    strcpy(str, "-file");
-    strcat(str, file);
+    qDebug() << "applicationHandler says: setFile = " << file;
+    char buf[MAX_BUF];
+    strcpy(buf, "-file ");
+    strcat(buf, file);
+    char* str = buf;
     sendR(&str);
 }
 
 void applicationHandler::setReduction(char *reduction)
 {
     qDebug() << "applicationHandler says: setReduction = " << reduction;
-    char *str;
-    strcpy(str, "-reduction");
-    strcat(str, reduction);
+    char buf[MAX_BUF];
+    strcpy(buf, "-reduction ");
+    strcat(buf, reduction);
+    char *str = buf;
     sendR(&str);
 }
 
 void applicationHandler::setUpdateInterval(char *updateInterval)
 {
     qDebug() << "applicationHandler says: setUpdateIntervaln = " << updateInterval;
-    char *str;
-    strcpy(str, "-updateInterval");
-    strcat(str, updateInterval);
+
+    char buf[MAX_BUF];
+    strcpy(buf, "-updateInterval ");
+    strcat(buf, updateInterval);
+    char *str = buf;
     sendR(&str);
 }
 
 void applicationHandler::setcDecay(char *cDecay)
 {
     qDebug() << "applicationHandler says: setcDecay = " << cDecay;
-    char *str;
-    strcpy(str, "-cDecay");
-    strcat(str, cDecay);
+    char buf[MAX_BUF];
+    strcpy(buf, "-cDecay ");
+    strcat(buf, cDecay);
+    char *str = buf;
     sendR(&str);
 }
 
 void applicationHandler::setViewport_Offset(char *offset)
 {
     qDebug() << "applicationHandler says: setViewport_Offset = " << offset ;
-    char *str;
-    strcpy(str, "-viewport_Offset");
-    strcat(str, offset);
+    char buf[MAX_BUF];
+    strcpy(buf, "-viewport_Offset ");
+    strcat(buf, offset);
+    char *str = buf;
     sendR(&str);
 }
 
 void applicationHandler::setTranslateBack_Offset(char *offset)
 {
     qDebug() << "applicationHandler says: setTranslateBack_Offset = " << offset ;
-    char *str;
-    strcpy(str, "-translateBack_Offset ");
-    strcat(str, offset);
+    char buf[MAX_BUF];
+    strcpy(buf, "-translateBack_Offset ");
+    strcat(buf, offset);
+    char *str = buf;
     sendR(&str);
 }
