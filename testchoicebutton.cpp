@@ -28,16 +28,19 @@ void testChoiceButton::reemitClicked()
     if (myColor == lightblue)
     {
         myColor = blue;
+        this->setText("middle");
         this->setStyleSheet("* { background-color: rgb(30,144,255) }");
     }
     else if (myColor == blue)
     {
         myColor = darkblue;
+        this->setText("back");
         this->setStyleSheet("* { background-color: rgb(0,0,205) }");
     }
     else
     {
         myColor = lightblue;
+        this->setText("front");
         this->setStyleSheet("* { background-color: rgb(135,206,250) }");
     }
     emit clicked(myDigit);
