@@ -17,7 +17,10 @@ void applicationHandler::closeGUI()
 void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
 {
     qDebug() << "applicationHandler says: blockNum = " << blockNum << ", seqNum = " << seqNum;
-
+    std::string stdstr = recordFiles[recordIDs[blockNum-1][seqNum][1]][recordIDs[blockNum-1][seqNum][2]];
+    stdstr = "-file " + stdstr;
+    char *str = &stdstr[0];
+    sendR(&str);
 }
 
 void applicationHandler::setControl(char *param)

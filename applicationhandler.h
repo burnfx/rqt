@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include "client.h"
+#include "recordNames.h"
 
 class applicationHandler
 {

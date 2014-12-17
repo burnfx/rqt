@@ -26,7 +26,8 @@ HEADERS  += \
     testexecution.h \
     testchoicebutton.h \
     applicationhandler.h \
-    client.h
+    client.h \
+    recordNames.h
 
 FORMS    += \
     usermanagement.ui \
