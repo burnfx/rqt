@@ -108,9 +108,11 @@ void applicationHandler::setcDecay(char *cDecay)
     sendR(&str);
 }
 
-void applicationHandler::setViewport_Offset(char *offset)
+void applicationHandler::setViewport_Offset(int value)
 {
-    qDebug() << "applicationHandler says: setViewport_Offset = " << offset ;
+    qDebug() << "applicationHandler says: setViewport_Offset = " << value ;
+    char *offset;
+    offset=itoa(value, offset, 10);
     char buf[MAX_BUF];
     strcpy(buf, "-viewport_Offset ");
     strcat(buf, offset);

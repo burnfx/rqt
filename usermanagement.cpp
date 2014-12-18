@@ -9,10 +9,13 @@
 #include <sstream>
 
 // Constructor
-userManagement::userManagement(const char *dbFile, QStringList userList, QWidget *parent) : QDialog(parent), ui(new Ui::userManagement)
+userManagement::userManagement(const char *dbFile, QStringList userList, applicationHandler *appHND, QWidget *parent) : QDialog(parent), ui(new Ui::userManagement)
 {
     ui->setupUi(this);
 
+    this->sliderIsPressed = 0;
+    this->sliderValChanged = 0;
+    this->appHND = appHND;
     this->ui->userCBX->addItems(userList);
 
     userDBFileName = dbFile;
@@ -199,4 +202,37 @@ void userManagement::on_userCBX_currentTextChanged(const QString &arg1)
 void userManagement::on_userNewCB_clicked()
 {
     ui->idLBL->setText("set after confirmation");
+}
+
+void userManagement::on_eyeDistSlider_sliderPressed()
+{
+    sliderIsPressed = 0;
+    if (sliderValChanged)
+    {
+        sliderValChanged = 0;
+        int eyeDistMax = 25;
+        int value = ceil(eyeDistMax * ui->eyeDistSlider->value() / 99);
+        appHND->setViewport_Offset(value);
+    }
+}
+
+void userManagement::on_eyeDistSlider_sliderReleased()
+{
+    sliderIsPressed = 1;
+}
+
+void userManagement::on_eyeDistSlider_valueChanged(int value)
+{
+    int eyeDistMax = 25;
+    value = ceil(eyeDistMax * value / 99);
+    ui->eyeDistTXT->setText(QString::number(value));
+    // ensure not to send 100 signals a second
+    if (!sliderIsPressed)
+    {
+        appHND->setViewport_Offset(value);
+    }
+    else
+    {
+        sliderValChanged = 1;
+    }
 }

@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>30</y>
+     <y>20</y>
      <width>241</width>
-     <height>241</height>
+     <height>251</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -136,7 +136,7 @@
     <item row="3" column="1">
      <widget class="QLineEdit" name="eyeDistTXT"/>
     </item>
-    <item row="4" column="0">
+    <item row="5" column="0">
      <widget class="QLabel" name="userParamLBL_2">
       <property name="minimumSize">
        <size>
@@ -155,10 +155,10 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="5" column="1">
      <widget class="QLineEdit" name="birthdayTXT"/>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="userParamLBL_3">
       <property name="minimumSize">
        <size>
@@ -177,10 +177,17 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="6" column="1">
      <widget class="QLabel" name="idLBL">
       <property name="text">
        <string>set after confirmation</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="2">
+     <widget class="QSlider" name="eyeDistSlider">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </item>

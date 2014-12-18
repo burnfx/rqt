@@ -178,7 +178,7 @@ void testWindow::on_defaultCMDB_clicked()
 // Open User Management
 void testWindow::on_userCMDB_clicked()
 {
-    um = new userManagement(userDBFileName, userList, this);
+    um = new userManagement(userDBFileName, userList, appHND, this);
     um->show();
 }
 

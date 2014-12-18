@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "client.h"
 #include "recordNames.h"
+#include <stdlib.h>
 
 class applicationHandler
 {
@@ -21,7 +22,7 @@ public:
     void setReduction(char *str);
     void setUpdateInterval(char *str);
     void setcDecay(char *str);
-    void setViewport_Offset(char *str);
+    void setViewport_Offset(int value);
     void setTranslateBack_Offset(char *str);
 
 private:

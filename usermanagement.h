@@ -2,6 +2,7 @@
 #define USERMANAGEMENT_H
 
 #include <QDialog>
+#include "applicationhandler.h"
 #include <iostream>
 #include <fstream>
 #include <limits>
@@ -16,7 +17,7 @@ class userManagement : public QDialog
     Q_OBJECT
 
 public:
-    explicit userManagement(const char *dbFile, QStringList userList, QWidget *parent = 0);
+    explicit userManagement(const char *dbFile, QStringList userList, applicationHandler *appHND, QWidget *parent = 0);
     ~userManagement();
     int extractUserId(std::string line);
 
@@ -28,10 +29,19 @@ private slots:
 
     void on_userNewCB_clicked();
 
+    void on_eyeDistSlider_sliderPressed();
+
+    void on_eyeDistSlider_sliderReleased();
+
+    void on_eyeDistSlider_valueChanged(int value);
+
 private:
     Ui::userManagement *ui;
+    applicationHandler *appHND;
     const char *userDBFileName;
     const char *userDBCopyName;
+    int sliderIsPressed;
+    int sliderValChanged;
 };
 
 #endif // USERMANAGEMENT_H
