@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     testexecution.cpp \
     testchoicebutton.cpp \
     applicationhandler.cpp \
-    client.cpp
+    client.cpp \
+    recordNames.cpp
 
 HEADERS  += \
     usermanagement.h \

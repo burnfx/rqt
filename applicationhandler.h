@@ -6,17 +6,23 @@
 #include "recordNames.h"
 #include <stdlib.h>
 
+
 class applicationHandler
 {
 public:
     applicationHandler();
 
+    static char* stringtoChar(std::string str);
+    static char* qstringtoChar(QString qstr);
+
     void closeGUI();
+    void sendToServer(char *str);
     void selectVideoTrack(int blockNum, int seqNum);
     //void playPauseTrack(int run_flag);
     //void stopTrack();
     void debugHandle();
     void setRedGreen(int arg1);
+    void setTime(char *time);
     void setFile(char *file);
     void setControl(char *param);
     void setReduction(char *str);

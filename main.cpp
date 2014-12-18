@@ -10,6 +10,5 @@ int main(int argc, char *argv[])
     applicationHandler appHND;
     testWindow w(&appHND);
     w.show();
-
     return a.exec();
 }

@@ -41,6 +41,8 @@ private slots:
 
     void on_check_1_stateChanged(int arg1);
 
+    void on_recordCMDB_clicked();
+
 private:
     Ui::testWindow *ui;
     userManagement *um;

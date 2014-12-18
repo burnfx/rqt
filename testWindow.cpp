@@ -14,6 +14,8 @@ testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindo
     ui->setupUi(this);
     userDBFileName = "user_id.txt";
     this->appHND = appHND;
+    int value = 5;
+    this->appHND->setViewport_Offset(value);
 
     // get user list from DB
     std::ifstream testFile(userDBFileName);
@@ -262,4 +264,21 @@ void testWindow::on_testCMDB_9_clicked()
 void testWindow::on_check_1_stateChanged(int arg1)
 {
     appHND->setRedGreen(arg1);
+}
+
+void testWindow::on_recordCMDB_clicked()
+{
+    char *recordName;
+    //recordName = applicationHandler::qstringtoChar(ui->recordNameLineEdit->text());
+    std::string recordNameStr = ui->recordNameLineEdit->text().toUtf8().constData();
+    recordName = new char[recordNameStr.length() + 1];
+    strcpy(recordName,recordNameStr.c_str());
+    //qDebug() << ui->recordNameLineEdit->text();
+    appHND->setFile(recordName);
+    // char *recordTime = applicationHandler::qstringtoChar(ui->recordTimeLineEdit->text());
+    char *recordTime;
+    std::string recordTimeStr = ui->recordTimeLineEdit->text().toUtf8().constData();
+    recordTime = new char[recordTimeStr.length() + 1];
+    strcpy(recordTime,recordTimeStr.c_str());
+    appHND->setTime(recordTime);
 }

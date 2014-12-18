@@ -1,7 +1,25 @@
 #include "applicationhandler.h"
 #include "client.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
 
 #define MAX_BUF 50
+
+static char* stringtoChar(std::string stdstr) {
+    char *str;
+    str = new char[stdstr.length() + 1];
+    strcpy(str,stdstr.c_str());
+    return str;
+}
+
+static char* qstringtoChar(QString qstr) {
+    char *str;
+    std::string stdstr = qstr.toUtf8().constData();
+    str = new char[stdstr.length() + 1];
+    strcpy(str,stdstr.c_str());
+    return str;
+}
 
 applicationHandler::applicationHandler()
 {
@@ -20,36 +38,38 @@ void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
     std::string stdstr = recordFiles[recordIDs[blockNum-1][seqNum][1]][recordIDs[blockNum-1][seqNum][2]];
     stdstr = "-file " + stdstr;
     char *str = &stdstr[0];
+    sendToServer(str);
+}
+
+void applicationHandler::sendToServer(char *str) {
     sendR(&str);
 }
 
+
 void applicationHandler::setControl(char *param)
 {
+    char *str;
     if (strcmp(param, "stop") == 0) {
         qDebug() << "applicationHandler says: current track stopped";
-        char *str = "-control stop";
-        sendR(&str);
+        str = "-control stop";
     }
     else if (strcmp(param, "play") == 0) {
         qDebug() << "applicationHandler says: play";
-        char *str = "-control play";
-        sendR(&str);
+        str = "-control play";
     }
     else if (strcmp(param, "pause") == 0) {
         qDebug() << "applicationHandler says: current track paused";
-        char *str = "-control pause";
-        sendR(&str);
+        str = "-control pause";
     }
     else if (strcmp(param, "next") == 0) {
         qDebug() << "applicationHandler says: next track";
-        char *str = "-control next";
-        sendR(&str);
+        str = "-control next";
     }
     else if (strcmp(param, "previous") == 0) {
         qDebug() << "applicationHandler says: next previous";
-        char *str = "-control previous";
-        sendR(&str);
+        str = "-control previous";
     }
+    sendToServer(str);
 }
 
 void applicationHandler::setRedGreen(int rgb) {
@@ -57,13 +77,13 @@ void applicationHandler::setRedGreen(int rgb) {
     {
         qDebug() << "applicationHandler says: setRedGreen = on";
         char* str = "-redgreen on";
-        sendR(&str);
+        sendToServer(str);
     }
     else
     {
         qDebug() << "applicationHandler says: setRedGreen = off";
         char* str = "-redgreen off";
-        sendR(&str);
+        sendToServer(str);
     }
 }
 
@@ -74,7 +94,17 @@ void applicationHandler::setFile(char *file)
     strcpy(buf, "-file ");
     strcat(buf, file);
     char* str = buf;
-    sendR(&str);
+    sendToServer(str);
+}
+
+void applicationHandler::setTime(char *time)
+{
+    qDebug() << "applicationHandler says: setTime = " << time;
+    char buf[MAX_BUF];
+    strcpy(buf, "-time ");
+    strcat(buf, time);
+    char *str = buf;
+    sendToServer(str);
 }
 
 void applicationHandler::setReduction(char *reduction)
@@ -84,7 +114,7 @@ void applicationHandler::setReduction(char *reduction)
     strcpy(buf, "-reduction ");
     strcat(buf, reduction);
     char *str = buf;
-    sendR(&str);
+    sendToServer(str);
 }
 
 void applicationHandler::setUpdateInterval(char *updateInterval)
@@ -95,7 +125,7 @@ void applicationHandler::setUpdateInterval(char *updateInterval)
     strcpy(buf, "-updateInterval ");
     strcat(buf, updateInterval);
     char *str = buf;
-    sendR(&str);
+    sendToServer(str);
 }
 
 void applicationHandler::setcDecay(char *cDecay)
@@ -105,19 +135,20 @@ void applicationHandler::setcDecay(char *cDecay)
     strcpy(buf, "-cDecay ");
     strcat(buf, cDecay);
     char *str = buf;
-    sendR(&str);
+    sendToServer(str);
 }
 
 void applicationHandler::setViewport_Offset(int value)
 {
     qDebug() << "applicationHandler says: setViewport_Offset = " << value ;
-    char *offset;
-    offset=itoa(value, offset, 10);
+    char offset[MAX_BUF];
+    sprintf(offset, "%d",value);
+    qDebug() << offset;
     char buf[MAX_BUF];
     strcpy(buf, "-viewport_Offset ");
     strcat(buf, offset);
     char *str = buf;
-    sendR(&str);
+    sendToServer(str);
 }
 
 void applicationHandler::setTranslateBack_Offset(char *offset)
@@ -127,5 +158,5 @@ void applicationHandler::setTranslateBack_Offset(char *offset)
     strcpy(buf, "-translateBack_Offset ");
     strcat(buf, offset);
     char *str = buf;
-    sendR(&str);
+    sendToServer(str);
 }
