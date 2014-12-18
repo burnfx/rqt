@@ -97,6 +97,16 @@ void applicationHandler::setFile(char *file)
     sendToServer(str);
 }
 
+void applicationHandler::setMode(char *mode)
+{
+    qDebug() << "applicationHandler says: setMode = " << mode;
+    char buf[MAX_BUF];
+    strcpy(buf, "-mode ");
+    strcat(buf, mode);
+    char* str = buf;
+    sendToServer(str);
+}
+
 void applicationHandler::setTime(char *time)
 {
     qDebug() << "applicationHandler says: setTime = " << time;

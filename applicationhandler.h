@@ -24,6 +24,7 @@ public:
     void setRedGreen(int arg1);
     void setTime(char *time);
     void setFile(char *file);
+    void setMode(char *mode);
     void setControl(char *param);
     void setReduction(char *str);
     void setUpdateInterval(char *str);

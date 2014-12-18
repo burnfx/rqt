@@ -280,5 +280,7 @@ void testWindow::on_recordCMDB_clicked()
     std::string recordTimeStr = ui->recordTimeLineEdit->text().toUtf8().constData();
     recordTime = new char[recordTimeStr.length() + 1];
     strcpy(recordTime,recordTimeStr.c_str());
-    appHND->setTime(recordTime);
+    // appHND->setTime(recordTime);
+    char* mode = "4";
+    appHND->setMode(mode);
 }
