@@ -16,6 +16,8 @@ testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindo
     this->appHND = appHND;
     int value = 5;
     this->appHND->setViewport_Offset(value);
+    char* mode = "2";
+    //appHND->setMode(mode);
 
     // get user list from DB
     std::ifstream testFile(userDBFileName);
@@ -283,4 +285,14 @@ void testWindow::on_recordCMDB_clicked()
     // appHND->setTime(recordTime);
     char* mode = "4";
     appHND->setMode(mode);
+    char* play = "play";
+    appHND->setControl(play);
+}
+
+void testWindow::on_playRecord_clicked()
+{
+    char* mode = "2";
+    appHND->setMode(mode);
+    char* play = "play";
+    appHND->setControl(play);
 }

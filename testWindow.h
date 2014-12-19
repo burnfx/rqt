@@ -43,6 +43,8 @@ private slots:
 
     void on_recordCMDB_clicked();
 
+    void on_playRecord_clicked();
+
 private:
     Ui::testWindow *ui;
     userManagement *um;
