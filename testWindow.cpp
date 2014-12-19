@@ -2,11 +2,13 @@
 #include "ui_testWindow.h"
 #include "main.cpp"
 #include <QDebug>
+#include <QString>
 #include "usermanagement.h"
 #include "testexecution.h"
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <unistd.h>
 
 // Constructor: Init with database values
 testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindow(parent), ui(new Ui::testWindow)
@@ -14,8 +16,8 @@ testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindo
     ui->setupUi(this);
     userDBFileName = "user_id.txt";
     this->appHND = appHND;
-    int value = 5;
-    this->appHND->setViewport_Offset(value);
+    //int value = 5;
+    //this->appHND->setViewport_Offset(value);
     char* mode = "2";
     //appHND->setMode(mode);
 
@@ -265,34 +267,48 @@ void testWindow::on_testCMDB_9_clicked()
 
 void testWindow::on_check_1_stateChanged(int arg1)
 {
-    appHND->setRedGreen(arg1);
+    QString str = QString::number(arg1);
+    appHND->setRedGreen(str);
 }
 
 void testWindow::on_recordCMDB_clicked()
 {
-    char *recordName;
+    //char *recordName;
     //recordName = applicationHandler::qstringtoChar(ui->recordNameLineEdit->text());
-    std::string recordNameStr = ui->recordNameLineEdit->text().toUtf8().constData();
-    recordName = new char[recordNameStr.length() + 1];
-    strcpy(recordName,recordNameStr.c_str());
+    //std::string recordNameStr = ui->recordNameLineEdit->text().toUtf8().constData();
+    //recordName = new char[recordNameStr.length() + 1];
+    //strcpy(recordName,recordNameStr.c_str());
     //qDebug() << ui->recordNameLineEdit->text();
-    appHND->setFile(recordName);
+    //appHND->setFile(recordName);
+    //appHND->setFile(ui->recordNameLineEdit->text());
     // char *recordTime = applicationHandler::qstringtoChar(ui->recordTimeLineEdit->text());
-    char *recordTime;
-    std::string recordTimeStr = ui->recordTimeLineEdit->text().toUtf8().constData();
-    recordTime = new char[recordTimeStr.length() + 1];
-    strcpy(recordTime,recordTimeStr.c_str());
+    //char *recordTime;
+    //std::string recordTimeStr = ui->recordTimeLineEdit->text().toUtf8().constData();
+    //recordTime = new char[recordTimeStr.length() + 1];
+    //strcpy(recordTime,recordTimeStr.c_str());
     // appHND->setTime(recordTime);
-    char* mode = "4";
-    appHND->setMode(mode);
-    char* play = "play";
+    //appHND->setTime(ui->recordTimeLineEdit->text());
+    // QString mode = "2";
+    //appHND->setMode(mode);
+    //appHND->setMode(mode);
+    appHND->setFile(ui->recordNameLineEdit->text());
+    usleep(100);
+    QString play = "play";
     appHND->setControl(play);
 }
 
-void testWindow::on_playRecord_clicked()
+void testWindow::on_stopCMDB_clicked()
 {
-    char* mode = "2";
-    appHND->setMode(mode);
-    char* play = "play";
-    appHND->setControl(play);
+    QString stop = "stop";
+    appHND->setControl(stop);
+}
+
+void testWindow::on_setFileCMDB_clicked()
+{
+    appHND->setFile(ui->recordNameLineEdit->text());
+}
+
+void testWindow::on_setModeCMDB_clicked()
+{
+    appHND->setMode(ui->modeLineEdit->text());
 }

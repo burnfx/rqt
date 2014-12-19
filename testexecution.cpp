@@ -9,12 +9,10 @@
 
 #define maxTrackTime 10;
 
-// COMMANDS
-char* stop = "stop";
-char* pause = "pause";
-char* play = "play";
-char* next = "next";
-char* previous = "previous";
+QString stop = "stop";
+QString play = "play";
+QString pause = "pause";
+
 
 TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent) :
     QDialog(parent),
@@ -79,6 +77,7 @@ void TestExecution::on_okCMDB_clicked()
 {
     // make sure application also stops
     runState = 0;
+
     appHND->setControl(stop);
 
     //get data off all buttons

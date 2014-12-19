@@ -6,14 +6,14 @@
 
 #define MAX_BUF 50
 
-static char* stringtoChar(std::string stdstr) {
+char* applicationHandler::stringtoChar(std::string stdstr) {
     char *str;
     str = new char[stdstr.length() + 1];
     strcpy(str,stdstr.c_str());
     return str;
 }
 
-static char* qstringtoChar(QString qstr) {
+char* applicationHandler::QStringtoChar(QString qstr) {
     char *str;
     std::string stdstr = qstr.toUtf8().constData();
     str = new char[stdstr.length() + 1];
@@ -41,132 +41,124 @@ void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
     sendToServer(str);
 }
 
-void applicationHandler::sendToServer(char *str) {
+void applicationHandler::sendToServer(QString qstr) {
+    char *str = QStringtoChar(qstr);
     sendR(&str);
 }
 
 
-void applicationHandler::setControl(char *param)
+void applicationHandler::setControl(QString param)
 {
-    char *str;
-    if (strcmp(param, "stop") == 0) {
-        qDebug() << "applicationHandler says: current track stopped";
-        str = "-control stop";
+    QString str = "-control ";
+    if (param.compare(param, "stop") == 0) {
+        str.append(param);
+        qDebug() << "applicationHandler says: " << str;
     }
-    else if (strcmp(param, "play") == 0) {
-        qDebug() << "applicationHandler says: play";
-        str = "-control play";
+    else if (param.compare(param, "play") == 0) {
+        str.append(param);
+        qDebug() << "applicationHandler says: " << str;
     }
-    else if (strcmp(param, "pause") == 0) {
-        qDebug() << "applicationHandler says: current track paused";
-        str = "-control pause";
+    else if (param.compare(param, "pause") == 0) {
+        str.append(param);
+        qDebug() << "applicationHandler says: " << str;
     }
-    else if (strcmp(param, "next") == 0) {
-        qDebug() << "applicationHandler says: next track";
-        str = "-control next";
+    else if (param.compare(param, "next") == 0) {
+        str.append(param);
+        qDebug() << "applicationHandler says: " << str;
     }
-    else if (strcmp(param, "previous") == 0) {
-        qDebug() << "applicationHandler says: next previous";
-        str = "-control previous";
+    else if (param.compare(param, "previous") == 0) {
+        str.append(param);
+        qDebug() << "applicationHandler says: " << str;
     }
     sendToServer(str);
 }
 
-void applicationHandler::setRedGreen(int rgb) {
-    if (rgb == 2)
+void applicationHandler::setRedGreen(QString param) {
+    QString str = "-redgreen ";
+    if (param.compare(param, "2") == 0)
     {
-        qDebug() << "applicationHandler says: setRedGreen = on";
-        char* str = "-redgreen on";
-        sendToServer(str);
+        str.append("on");
+        qDebug() << "applicationHandler says: " << str;
     }
     else
     {
-        qDebug() << "applicationHandler says: setRedGreen = off";
-        char* str = "-redgreen off";
-        sendToServer(str);
+        str.append("off");
+        qDebug() << "applicationHandler says: " << str;
+
     }
-}
-
-void applicationHandler::setFile(char *file)
-{
-    qDebug() << "applicationHandler says: setFile = " << file;
-    char buf[MAX_BUF];
-    strcpy(buf, "-file ");
-    strcat(buf, file);
-    char* str = buf;
     sendToServer(str);
 }
 
-void applicationHandler::setMode(char *mode)
+void applicationHandler::setFile(QString param)
 {
-    qDebug() << "applicationHandler says: setMode = " << mode;
-    char buf[MAX_BUF];
-    strcpy(buf, "-mode ");
-    strcat(buf, mode);
-    char* str = buf;
+
+    // char buf[MAX_BUF];
+    QString str = "-";
+    str.append("file ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }
 
-void applicationHandler::setTime(char *time)
+void applicationHandler::setMode(QString param)
 {
-    qDebug() << "applicationHandler says: setTime = " << time;
-    char buf[MAX_BUF];
-    strcpy(buf, "-time ");
-    strcat(buf, time);
-    char *str = buf;
+    QString str = "-";
+    str.append("mode ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }
 
-void applicationHandler::setReduction(char *reduction)
+void applicationHandler::setTime(QString param)
 {
-    qDebug() << "applicationHandler says: setReduction = " << reduction;
-    char buf[MAX_BUF];
-    strcpy(buf, "-reduction ");
-    strcat(buf, reduction);
-    char *str = buf;
+    QString str = "-";
+    str.append("time ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }
 
-void applicationHandler::setUpdateInterval(char *updateInterval)
+void applicationHandler::setReduction(QString param)
 {
-    qDebug() << "applicationHandler says: setUpdateIntervaln = " << updateInterval;
-
-    char buf[MAX_BUF];
-    strcpy(buf, "-updateInterval ");
-    strcat(buf, updateInterval);
-    char *str = buf;
+    QString str = "-";
+    str.append("reduction ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }
 
-void applicationHandler::setcDecay(char *cDecay)
+void applicationHandler::setUpdateInterval(QString param)
 {
-    qDebug() << "applicationHandler says: setcDecay = " << cDecay;
-    char buf[MAX_BUF];
-    strcpy(buf, "-cDecay ");
-    strcat(buf, cDecay);
-    char *str = buf;
+    QString str = "-";
+    str.append("updateInterval ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }
 
-void applicationHandler::setViewport_Offset(int value)
+void applicationHandler::setcDecay(QString param)
 {
-    qDebug() << "applicationHandler says: setViewport_Offset = " << value ;
-    char offset[MAX_BUF];
-    sprintf(offset, "%d",value);
-    qDebug() << offset;
-    char buf[MAX_BUF];
-    strcpy(buf, "-viewport_Offset ");
-    strcat(buf, offset);
-    char *str = buf;
+    QString str = "-";
+    str.append("cDecay ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }
 
-void applicationHandler::setTranslateBack_Offset(char *offset)
+void applicationHandler::setViewport_Offset(QString param)
 {
-    qDebug() << "applicationHandler says: setTranslateBack_Offset = " << offset ;
-    char buf[MAX_BUF];
-    strcpy(buf, "-translateBack_Offset ");
-    strcat(buf, offset);
-    char *str = buf;
+    QString str = "-";
+    str.append("viewport_Offset ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
+    sendToServer(str);
+}
+
+void applicationHandler::setTranslateBack_Offset(QString param)
+{
+    QString str = "-";
+    str.append("translateBack_Offset ");
+    str.append(param);
+    qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
 }

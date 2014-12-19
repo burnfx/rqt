@@ -1,6 +1,7 @@
 #include "usermanagement.h"
 #include "ui_usermanagement.h"
 #include <QDebug>
+#include <QString>
 #include "testWindow.h"
 #include <iostream>
 #include <fstream>
@@ -212,7 +213,8 @@ void userManagement::on_eyeDistSlider_sliderPressed()
         sliderValChanged = 0;
         int eyeDistMax = 25;
         int value = ceil(eyeDistMax * ui->eyeDistSlider->value() / 99);
-        appHND->setViewport_Offset(value);
+        QString str = QString::number(value);
+        appHND->setViewport_Offset(str);
     }
 }
 
@@ -229,7 +231,8 @@ void userManagement::on_eyeDistSlider_valueChanged(int value)
     // ensure not to send 100 signals a second
     if (!sliderIsPressed)
     {
-        appHND->setViewport_Offset(value);
+        QString str = QString::number(value);
+        appHND->setViewport_Offset(str);
     }
     else
     {

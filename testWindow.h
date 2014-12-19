@@ -43,7 +43,11 @@ private slots:
 
     void on_recordCMDB_clicked();
 
-    void on_playRecord_clicked();
+    void on_stopCMDB_clicked();
+
+    void on_setFileCMDB_clicked();
+
+    void on_setModeCMDB_clicked();
 
 private:
     Ui::testWindow *ui;
