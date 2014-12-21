@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     testchoicebutton.cpp \
     applicationhandler.cpp \
     client.cpp \
-    recordNames.cpp
+    recordNames.cpp \
+    guistartup.cpp
 
 HEADERS  += \
     usermanagement.h \
@@ -28,9 +29,11 @@ HEADERS  += \
     testchoicebutton.h \
     applicationhandler.h \
     client.h \
-    recordNames.h
+    recordNames.h \
+    guistartup.h
 
 FORMS    += \
     usermanagement.ui \
     testWindow.ui \
-    testexecution.ui
+    testexecution.ui \
+    guistartup.ui

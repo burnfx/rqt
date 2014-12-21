@@ -1,4 +1,4 @@
-#include <sys/types.h>
+/*#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -28,7 +28,7 @@ void sendR(char** cmd) {
     return;
 }
 
-/* disconnects from server */
+// disconnects from server
 void stopClient(int signum) {
     char* quit = "-quit 1";
     sendR(&quit);
@@ -36,7 +36,7 @@ void stopClient(int signum) {
     return;
 }
 
-/* starts client connection to retinarift server */
+// starts client connection to retinarift server
 void startClient() {
     // set signals for terminate/interrupt
     signal(SIGTERM, stopClient);
@@ -96,3 +96,4 @@ int clientMain(int argc, char *argv[])
         startClient();
         stopClient(1);
 }
+*/
