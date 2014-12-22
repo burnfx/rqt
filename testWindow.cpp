@@ -14,12 +14,20 @@
 testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindow(parent), ui(new Ui::testWindow)
 {
     ui->setupUi(this);
-    userDBFileName = "user_id.txt";
+    userDBFileName = "user_db.txt";
     this->appHND = appHND;
     //int value = 5;
     //this->appHND->setViewport_Offset(value);
     char* mode = "2";
     //appHND->setMode(mode);
+
+    // set up test block buttons
+    for (int i = 1; i < 10; ++i)
+    {
+        buttons[i-1] = new testExecButton(i, this);
+        ui->testButtonGrid->addWidget(buttons[i-1], floor((i-1)/3), (i-1)%3);
+        connect(buttons[i-1], SIGNAL(clicked(int)), this, SLOT(openTestRecordingWindow(int)));
+    }
 
     // get user list from DB
     std::ifstream testFile(userDBFileName);
@@ -60,6 +68,10 @@ testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindo
 testWindow::~testWindow()
 {
     appHND->closeGUI();
+    for (int i = 1; i < 10; ++i)
+    {
+        delete buttons[i-1];
+    }
     delete ui;
 }
 
@@ -160,24 +172,71 @@ void testWindow::updateUserList(QString userName, int addNewIfOne)
 }
 
 
+void testWindow::updateExecutedTests()
+{
+    // set all buttons grey first
+    for (int i=1; i<10; i++)
+    {
+        buttons[i-1]->setStyleSheet("* { background-color: rgb(145,145,145) }");
+    }
+
+    std::string tempStr = ui->userParamValLBL_3->text().toUtf8().constData();
+    std::string userDBFile = "testdata_userID_" + tempStr + ".txt";
+
+    std::ifstream readFile(userDBFile.c_str());
+    std::string line;
+
+    // now check for test already executed
+    if (readFile.is_open())
+    {
+        // for each line
+        while ( getline (readFile,line) )
+        {
+            //compare second entry
+            std::string lineName[3];
+            int csvCNT = 0;
+            for(unsigned int i = 0; i < line.size(); i++)
+            {
+                if (line[i] != ',')
+                {
+                    lineName[csvCNT].append(1, line[i]);
+                }
+                else if (line[i] == ',')
+                {
+                    csvCNT++;
+                }
+
+                if (csvCNT == 3)
+                {
+                    if (lineName[0] == "testBlock")
+                    {
+                        // check for all blocks
+                        if (lineName[2]=="complete=false")
+                        {
+                            buttons[atoi(lineName[1].c_str())-1]->setStyleSheet("* { background-color: rgb(160,0,0) }");
+                        }
+                        else if (lineName[2]=="complete=true")
+                        {
+                            buttons[atoi(lineName[1].c_str())-1]->setStyleSheet("* { background-color: rgb(0,100,0) }");
+                        }
+                        else
+                        {
+                            qDebug() << "DB file seems to be corrupt.";
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        readFile.close();
+    }
+}
+
+
 // Close Window
 void testWindow::on_closeCMDB_clicked()
 {
     this->close();
-}
-
-
-// MISSING - Save and apply Parameter Values
-void testWindow::on_applyCMDB_clicked()
-{
-    qDebug() << "Not implemented - apply something.";
-}
-
-
-// MISSING - Set all values as default
-void testWindow::on_defaultCMDB_clicked()
-{
-    qDebug() << "Not implemented - restore default values.";
 }
 
 
@@ -206,63 +265,100 @@ void testWindow::on_userCBX_currentTextChanged(const QString &arg1)
     ui->userParamValLBL_1->setText(QString::fromUtf8( userData[2].data(), userData[2].size() ));
     ui->userParamValLBL_2->setText(QString::fromUtf8( userData[3].data(), userData[3].size() ));
     ui->userParamValLBL_3->setText(QString::fromUtf8( userData[0].data(), userData[0].size() ));
+    updateExecutedTests();
 }
 
 
-// For all the following
 // Start test No X, Open new window accordingly to save results
-void testWindow::on_testCMDB_1_clicked()
+void testWindow::openTestRecordingWindow(int bNum)
 {
-    te = new TestExecution(1, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
+    // set file names
+    std::string userDBCopyName = "temp_DB_Copy.txt";
+    std::string userDBFileNameLocal = ui->userParamValLBL_3->text().toUtf8().constData();
+    userDBFileNameLocal = "testdata_userID_" + userDBFileNameLocal + ".txt";
+
+    // check if test block was recorded before and act accordingly
+    std::ifstream origFile(userDBFileNameLocal.c_str()); //File to read from
+    if (origFile)
+    {
+        // make a copy of the DB
+        std::ofstream copyFile(userDBCopyName.c_str()); //Temporary file
+        if(!origFile || !copyFile) {qDebug() << "Error opening files!";}
+        copyFile << origFile.rdbuf();
+        origFile.close();
+        copyFile.close();
+
+        // check if block was already executed
+        std::ifstream readFile(userDBFileNameLocal.c_str());
+        std::string line;
+        int alrExAtLine = 0;
+        if (readFile.is_open())
+        {
+            // for each line
+            int lineCnt = 0;
+            while ( getline (readFile,line) )
+            {
+                lineCnt++;
+                std::string lineName[3];
+                int csvCNT = 0;
+                for(unsigned int i = 0; i < line.size(); i++)
+                {
+                    if (line[i] != ',') {lineName[csvCNT].append(1, line[i]);}
+                    else if (line[i] == ',') {csvCNT++;}
+
+                    if (csvCNT == 3)
+                    {
+                        if (lineName[0] == "testBlock")
+                        {
+                            if (atoi(lineName[1].c_str()) == bNum)
+                            {
+                                alrExAtLine = lineCnt;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            readFile.close();
+        }
+
+        // Window: would you like to overwrite?
+        if (alrExAtLine)
+        {
+            alreadyRecordedWindow aWnd;
+            aWnd.setModal(true);
+            if (aWnd.exec()!=QDialog::Accepted) {return;}
+
+            // Overwriting Procedure
+            std::ifstream userReadDBFile(userDBCopyName.c_str());
+            std::ofstream userWriteDBFile(userDBFileNameLocal.c_str());
+            if(!userReadDBFile || !userWriteDBFile) {qDebug() << "Error opening files!";}
+
+            std::string strTemp;
+            int lineCnt = 0;
+            while(getline(userReadDBFile, strTemp))
+            {
+                lineCnt++;
+                if (!((lineCnt>=alrExAtLine) && (lineCnt<alrExAtLine+3)))
+                {
+                    strTemp += "\n";
+                    userWriteDBFile << strTemp;
+                }
+            }
+            userReadDBFile.close();
+            userWriteDBFile.close();
+        }
+    }
+
+    te = new TestExecution(bNum, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
     te->show();
+    QObject::connect(te, SIGNAL(recordsUpdated()), this, SLOT(exRecordUpdate()));
 }
 
-void testWindow::on_testCMDB_2_clicked()
-{
-    te = new TestExecution(2, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
 
-void testWindow::on_testCMDB_3_clicked()
+void testWindow::exRecordUpdate()
 {
-    te = new TestExecution(3, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
-
-void testWindow::on_testCMDB_4_clicked()
-{
-    te = new TestExecution(4, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
-
-void testWindow::on_testCMDB_5_clicked()
-{
-    te = new TestExecution(5, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
-
-void testWindow::on_testCMDB_6_clicked()
-{
-    te = new TestExecution(6, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
-
-void testWindow::on_testCMDB_7_clicked()
-{
-    te = new TestExecution(7, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
-
-void testWindow::on_testCMDB_8_clicked()
-{
-    te = new TestExecution(8, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
-}
-
-void testWindow::on_testCMDB_9_clicked()
-{
-    te = new TestExecution(9, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
-    te->show();
+    updateExecutedTests();
 }
 
 void testWindow::on_check_1_stateChanged(int arg1)

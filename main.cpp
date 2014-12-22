@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     // if test mode was not selected close GUI
     if (g.exec()!=QDialog::Accepted)
     {
+        appHND.closeGUI();
         return a.exec();
     }
 

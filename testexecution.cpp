@@ -49,11 +49,15 @@ TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString
         {
             buttons[cnt] = new testChoiceButton(i, j, this);
             ui->gridLayoutCMDB->addWidget(buttons[cnt], i+1, j);
-            connect(buttons[cnt], SIGNAL(clicked(int)), this, SLOT(setPosition(int)));
             cnt++;
         }
     }
     updateCurrentSequence();
+
+    // set file names
+    userDBCopyName = "temp_DB_Copy.txt";
+    userDBFileName = userID.toUtf8().constData();
+    userDBFileName = "testdata_userID_" + userDBFileName + ".txt";
 }
 
 TestExecution::~TestExecution()
@@ -70,16 +74,12 @@ TestExecution::~TestExecution()
             cnt++;
         }
     }
+    emit recordsUpdated();
     delete ui;
 }
 
 void TestExecution::on_okCMDB_clicked()
 {
-    // make sure application also stops
-    runState = 0;
-
-    appHND->setControl(stop);
-
     //get data off all buttons
     //if a datapoint is missing set "uncomplete_flag"
     int complete = 1;
@@ -94,14 +94,24 @@ void TestExecution::on_okCMDB_clicked()
         ss[3] << buttons[i+2]->getDepthData(complete_flag);
         seq[i/3] = "seq" + ss[0].str() + "," + ss[1].str() + ss[2].str() + ss[3].str();
     }
-    if (*complete_flag == 0) {qDebug() << "Incomplete Test";}
+    if (*complete_flag == 0)
+    {
+        saveCloseWindow sWnd;
+        sWnd.setModal(true);
+        if (sWnd.exec()!=QDialog::Accepted)
+        {
+            return;
+        }
+    }
+
+    // make sure application also stops
+    runState = 0;
+    appHND->setControl(stop);
 
     //read comments
     std::string comments = ui->textEdit->toPlainText().toUtf8().constData();
 
     //open file with user id
-    std::string userDBFileName = userID.toUtf8().constData();
-    userDBFileName = "testdata_userID_" + userDBFileName + ".txt";
     std::ofstream testDataFile;
     testDataFile.open(userDBFileName.c_str(), std::ofstream::out | std::ofstream::app);
 
@@ -110,11 +120,11 @@ void TestExecution::on_okCMDB_clicked()
     ss << testNo;
     if (*complete_flag == 0)
     {
-        testDataFile << "testBlock" << testNo  << ",complete=false,";
+        testDataFile << "testBlock," << testNo  << ",complete=false,";
     }
     else
     {
-        testDataFile << "testBlock" << testNo  << ",complete=true,";
+        testDataFile << "testBlock," << testNo  << ",complete=true,";
     }
 
     // date, time, supervisor
@@ -137,6 +147,8 @@ void TestExecution::on_okCMDB_clicked()
     // close file
     testDataFile.close();
 
+    // update executed test information
+    emit recordsUpdated();
 
     // close window
     this->close();
@@ -144,17 +156,24 @@ void TestExecution::on_okCMDB_clicked()
 
 void TestExecution::on_exitCMDB_clicked()
 {
+    closeWindow cWnd;
+    cWnd.setModal(true);
+    if (cWnd.exec()!=QDialog::Accepted)
+    {
+        return;
+    }
+
     // make sure application also stops
     runState = 0;
     appHND->setControl(stop);
+
+    // update executed test information
+    emit recordsUpdated();
+
     // close
     this->close();
 }
 
-void TestExecution::setPosition(int buttonNo)
-{
-    //qDebug() << "Not needed anymore.. Button No.: " << buttonNo;
-}
 
 void TestExecution::update()
 {

@@ -20,7 +20,11 @@ SOURCES += main.cpp\
     applicationhandler.cpp \
     client.cpp \
     recordNames.cpp \
-    guistartup.cpp
+    guistartup.cpp \
+    closewindow.cpp \
+    saveclosewindow.cpp \
+    testexecbutton.cpp \
+    alreadyrecordedwindow.cpp
 
 HEADERS  += \
     usermanagement.h \
@@ -30,10 +34,17 @@ HEADERS  += \
     applicationhandler.h \
     client.h \
     recordNames.h \
-    guistartup.h
+    guistartup.h \
+    closewindow.h \
+    saveclosewindow.h \
+    testexecbutton.h \
+    alreadyrecordedwindow.h
 
 FORMS    += \
     usermanagement.ui \
     testWindow.ui \
     testexecution.ui \
-    guistartup.ui
+    guistartup.ui \
+    closewindow.ui \
+    saveclosewindow.ui \
+    alreadyrecordedwindow.ui

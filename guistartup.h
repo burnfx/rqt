@@ -19,19 +19,12 @@ public:
     ~guiStartup();
 
 private slots:
-
     void on_exitCMDB_clicked();
-
     void on_testCMDB_2_clicked();
-
     void on_playCMDB_clicked();
-
     void on_recordCMDB_clicked();
-
     void on_edvsCMDB_clicked();
-
     void on_setFileCMDB_clicked();
-
     void on_stopCMDB_clicked();
 
 private:
