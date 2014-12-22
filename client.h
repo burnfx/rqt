@@ -1,4 +1,4 @@
-/*#ifndef CLIENT_H_
+#ifndef CLIENT_H_
 #define CLIENT_H_
     extern int client;
     void sendR(char** cmd);
@@ -6,4 +6,3 @@
     void startClient();
     void stopClient(int signum);
 #endif
-*/

@@ -28,7 +28,7 @@ applicationHandler::applicationHandler()
 
 void applicationHandler::closeGUI()
 {
-    //stopClient(1);
+    stopClient(1);
     qDebug() << "applicationHandler says: GUI closed";
 }
 
@@ -43,8 +43,8 @@ void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
 
 void applicationHandler::sendToServer(QString qstr) {
     qDebug() << qstr;
-//    char *str = QStringtoChar(qstr);
-//    sendR(&str);
+    char *str = QStringtoChar(qstr);
+    sendR(&str);
 }
 
 

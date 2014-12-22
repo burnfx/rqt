@@ -6,13 +6,13 @@
 
 int main(int argc, char *argv[])
 {
-    /* Unmake comments in the following files / functions:
+    /* Make // Unmake comments in the following files / functions to run on Windows / Linux:
      * void applicationHandler::closeGUI()
      * void applicationHandler::sendToServer(QString qstr)
      * client.h
      * client.cpp
      * and beneath this one here. */
-    //startClient();
+    startClient();
     QApplication a(argc, argv);
     applicationHandler appHND;
     guiStartup g(&appHND);
