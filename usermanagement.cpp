@@ -21,12 +21,27 @@ userManagement::userManagement(const char *dbFile, QStringList userList, applica
 
     userDBFileName = dbFile;
     userDBCopyName = "temp_DB_Copy.txt";
+
+    runState = 1;
+    vidCnt = 10;
+
+    // start timer
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
+    timer->setInterval(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(1000);
+
+    // send file name
+    this->appHND->selectVideoTrack();
+    this->appHND->setControl("play");
 }
 
 
 // Destructor
 userManagement::~userManagement()
 {
+    runState = 0;
     delete ui;
 }
 
@@ -51,6 +66,7 @@ int userManagement::extractUserId(std::string line)
 // Closes the window, discarding changes
 void userManagement::on_closeCMDB_clicked()
 {
+    runState = 0;
     this->close();
 }
 
@@ -73,6 +89,7 @@ void userManagement::on_okCMDB_clicked()
     // If nothing was entered --> exit
     if (userName == "")
     {
+        runState = 0;
         this->close();
     }
     // If New User is beeing created
@@ -136,6 +153,7 @@ void userManagement::on_okCMDB_clicked()
     // make current entry in parent window dropdown list
     qobject_cast<testWindow*>(parent())->setCurrentUser(ui->userNameTXT->text());
 
+    runState = 0;
     this->close();
 }
 
@@ -211,8 +229,8 @@ void userManagement::on_eyeDistSlider_sliderPressed()
     if (sliderValChanged)
     {
         sliderValChanged = 0;
-        int eyeDistMax = 25;
-        int value = ceil(eyeDistMax * ui->eyeDistSlider->value() / 99);
+        int eyeDistMax = 100;
+        int value = ceil(eyeDistMax * ui->eyeDistSlider->value() / 99) -50;
         QString str = QString::number(value);
         appHND->setViewport_Offset(str);
     }
@@ -225,8 +243,8 @@ void userManagement::on_eyeDistSlider_sliderReleased()
 
 void userManagement::on_eyeDistSlider_valueChanged(int value)
 {
-    int eyeDistMax = 25;
-    value = ceil(eyeDistMax * value / 99);
+    int eyeDistMax = 100;
+    value = ceil(eyeDistMax * value / 99) -50;
     ui->eyeDistTXT->setText(QString::number(value));
     // ensure not to send 100 signals a second
     if (!sliderIsPressed)
@@ -238,4 +256,23 @@ void userManagement::on_eyeDistSlider_valueChanged(int value)
     {
         sliderValChanged = 1;
     }
+}
+
+
+void userManagement::update()
+{
+    // if timer should actually be stopped, but is just running out
+    if (!runState) { return; }
+
+    // if sequence is over
+    if (!vidCnt--)
+    {
+        qDebug() << "usermanagement timer elapsed 10 times -> restart video";
+        appHND->setControl("stop");
+        appHND->setControl("play");
+        vidCnt = 10;
+    }
+
+    // if runState is still active restart timer
+    if (runState) { timer->start(1000); }
 }

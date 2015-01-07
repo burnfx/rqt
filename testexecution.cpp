@@ -58,6 +58,9 @@ TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString
     userDBCopyName = "temp_DB_Copy.txt";
     userDBFileName = userID.toUtf8().constData();
     userDBFileName = "testdata_userID_" + userDBFileName + ".txt";
+
+    // send initial file name
+    appHND->selectVideoTrack(testNo,currentSeqNo);
 }
 
 TestExecution::~TestExecution()
@@ -187,6 +190,9 @@ void TestExecution::update()
         {
             currentSeqNo++;
             appHND->selectVideoTrack(testNo,currentSeqNo);
+            if(runState){
+                appHND->setControl(play);
+            }
         }
         // if end of block reached
         else
@@ -236,25 +242,35 @@ void TestExecution::on_stopCMDB_clicked()
 void TestExecution::on_backCMDB_clicked()
 {
     // if still running reset timer
-    if (runState) { timer->start(1000); }
+    if (runState) {
+        timer->start(1000);
+    }
     // reset sequence counter
     currentSeqCnt = maxTrackTime;
     // go one track back
     if (currentSeqNo) {currentSeqNo--;}
     appHND->selectVideoTrack(testNo,currentSeqNo);
+    if (runState) {
+        appHND->setControl(play);
+    }
     updateCurrentSequence();
 }
 
 void TestExecution::on_fwdCMDB_clicked()
 {
     // if still running reset timer
-    if (runState) { timer->start(1000); }
+    if (runState) {
+        timer->start(1000);
+    }
     // reset sequence counter
     currentSeqCnt = maxTrackTime;
     // go one track forward, stop at the end
     if (currentSeqNo < 9) {currentSeqNo++;}
     else {runState = 0;}
     appHND->selectVideoTrack(testNo,currentSeqNo);
+    if (runState) {
+        appHND->setControl(play);
+    }
     updateCurrentSequence();
 }
 

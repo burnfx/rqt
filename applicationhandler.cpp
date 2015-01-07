@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <unistd.h>
 
 #define MAX_BUF 50
 
@@ -35,8 +36,17 @@ void applicationHandler::closeGUI()
 void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
 {
     qDebug() << "applicationHandler says: blockNum = " << blockNum << ", seqNum = " << seqNum;
-    std::string stdstr = recordFiles[recordIDs[blockNum-1][seqNum][1]][recordIDs[blockNum-1][seqNum][2]];
+    std::string stdstr = recordFiles[recordIDs[blockNum-1][seqNum][0]][recordIDs[blockNum-1][seqNum][1]];
     stdstr = "-file " + stdstr;
+    char *str = &stdstr[0];
+    sendToServer(str);
+}
+
+void applicationHandler::selectVideoTrack()
+{
+    qDebug() << "applicationHandler says: load eye slider demo file";
+
+    std::string stdstr = "-file e1d30l1m1r1h111";
     char *str = &stdstr[0];
     sendToServer(str);
 }
@@ -45,6 +55,7 @@ void applicationHandler::sendToServer(QString qstr) {
     qDebug() << qstr;
     char *str = QStringtoChar(qstr);
     sendR(&str);
+    usleep(100);
 }
 
 

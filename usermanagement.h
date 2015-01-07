@@ -26,22 +26,22 @@ private slots:
     void on_okCMDB_clicked();
     void on_delCMDB_clicked();
     void on_userCBX_currentTextChanged(const QString &arg1);
-
     void on_userNewCB_clicked();
-
     void on_eyeDistSlider_sliderPressed();
-
     void on_eyeDistSlider_sliderReleased();
-
     void on_eyeDistSlider_valueChanged(int value);
+    void update();
 
 private:
     Ui::userManagement *ui;
     applicationHandler *appHND;
+    QTimer *timer;
     const char *userDBFileName;
     const char *userDBCopyName;
     int sliderIsPressed;
     int sliderValChanged;
+    int runState;
+    int vidCnt;
 };
 
 #endif // USERMANAGEMENT_H
