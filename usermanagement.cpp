@@ -85,6 +85,7 @@ void userManagement::on_okCMDB_clicked()
     std::string userName = ui->userNameTXT->text().toUtf8().constData();
     std::string eyeDist = ui->eyeDistTXT->text().toUtf8().constData();
     std::string birthday = ui->birthdayTXT->text().toUtf8().constData();
+    std::string userGroup = ui->groupTXT->text().toUtf8().constData();
 
     // If nothing was entered --> exit
     if (userName == "")
@@ -108,7 +109,7 @@ void userManagement::on_okCMDB_clicked()
         // add to user list DB
         std::ofstream userWriteIdFile;
         userWriteIdFile.open(userDBFileName, std::ofstream::out | std::ofstream::app);
-        userWriteIdFile << userID << "," << userName << "," << eyeDist << "," << birthday << "\n";
+        userWriteIdFile << userID << "," << userName << "," << eyeDist << "," << birthday << "," << userGroup << "\n";
         userWriteIdFile.close();
 
         // add to dropdown user lists of parent window
@@ -129,7 +130,7 @@ void userManagement::on_okCMDB_clicked()
         int userID = extractUserId(strReplace);
         if (userID < 100) {qDebug() << "Error with old userID!";}
         std::stringstream sstrNew;
-        sstrNew << userID << "," << userName << "," << eyeDist << "," << birthday;
+        sstrNew << userID << "," << userName << "," << eyeDist << "," << birthday << "," << userGroup;
         std::string strNew = sstrNew.str();
 
         std::ifstream userReadIdFile(userDBCopyName);
@@ -201,7 +202,7 @@ void userManagement::on_userCBX_currentTextChanged(const QString &arg1)
     // get details from db
     std::string userDetails =  qobject_cast<testWindow*>(parent())->getDBentry(arg1);
 
-    std::string userData[4];
+    std::string userData[5];
     int dataIndex = 0;
     for(unsigned int i = 0; i < userDetails.size(); i++)
     {
@@ -213,6 +214,7 @@ void userManagement::on_userCBX_currentTextChanged(const QString &arg1)
     ui->userNameTXT->setText(QString::fromUtf8( userData[1].data(), userData[1].size() ));
     ui->eyeDistTXT->setText(QString::fromUtf8( userData[2].data(), userData[2].size() ));
     ui->birthdayTXT->setText(QString::fromUtf8( userData[3].data(), userData[3].size() ));
+    ui->groupTXT->setText(QString::fromUtf8( userData[4].data(), userData[4].size() ));
     ui->idLBL->setText(QString::fromUtf8( userData[0].data(), userData[0].size() ));
 }
 

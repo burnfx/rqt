@@ -14,7 +14,7 @@ QString play = "play";
 QString pause = "pause";
 
 
-TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent) :
+TestExecution::TestExecution(int testNo, int userGroup, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TestExecution)
 {
@@ -23,6 +23,7 @@ TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString
     this->testNo = testNo;
     this->stUser = stUser;
     this->userID = userID;
+    this->userGroup = userGroup;
     this->supervisor = sup.toUtf8().constData();
     this->runState = 0;
     this->currentSeqNo = 0;
@@ -60,7 +61,7 @@ TestExecution::TestExecution(int testNo, QString stUser, QString userID, QString
     userDBFileName = "testdata_userID_" + userDBFileName + ".txt";
 
     // send initial file name
-    appHND->selectVideoTrack(testNo,currentSeqNo);
+    appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
 }
 
 TestExecution::~TestExecution()
@@ -189,7 +190,7 @@ void TestExecution::update()
         if (currentSeqNo < 9)
         {
             currentSeqNo++;
-            appHND->selectVideoTrack(testNo,currentSeqNo);
+            appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
             if(runState){
                 appHND->setControl(play);
             }
@@ -249,7 +250,7 @@ void TestExecution::on_backCMDB_clicked()
     currentSeqCnt = maxTrackTime;
     // go one track back
     if (currentSeqNo) {currentSeqNo--;}
-    appHND->selectVideoTrack(testNo,currentSeqNo);
+    appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
     if (runState) {
         appHND->setControl(play);
     }
@@ -267,7 +268,7 @@ void TestExecution::on_fwdCMDB_clicked()
     // go one track forward, stop at the end
     if (currentSeqNo < 9) {currentSeqNo++;}
     else {runState = 0;}
-    appHND->selectVideoTrack(testNo,currentSeqNo);
+    appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
     if (runState) {
         appHND->setControl(play);
     }

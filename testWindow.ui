@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>559</height>
+    <width>651</width>
+    <height>584</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>160</y>
       <width>211</width>
       <height>75</height>
@@ -70,9 +70,9 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>20</x>
       <y>40</y>
-      <width>531</width>
+      <width>621</width>
       <height>71</height>
      </rect>
     </property>
@@ -87,7 +87,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
+         <width>60</width>
          <height>30</height>
         </size>
        </property>
@@ -106,7 +106,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>90</width>
          <height>30</height>
         </size>
        </property>
@@ -125,7 +125,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>90</width>
+         <width>120</width>
          <height>30</height>
         </size>
        </property>
@@ -144,7 +144,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>90</width>
          <height>30</height>
         </size>
        </property>
@@ -163,7 +163,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
+         <width>50</width>
          <height>30</height>
         </size>
        </property>
@@ -210,7 +210,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
+         <width>50</width>
          <height>30</height>
         </size>
        </property>
@@ -236,7 +236,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>90</width>
          <height>30</height>
         </size>
        </property>
@@ -256,7 +256,7 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>260</y>
       <width>130</width>
       <height>51</height>
@@ -275,8 +275,8 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>150</y>
+      <x>400</x>
+      <y>160</y>
       <width>231</width>
       <height>211</height>
      </rect>
@@ -286,7 +286,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>130</y>
       <width>191</width>
       <height>21</height>
@@ -305,9 +305,9 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>125</y>
-      <width>141</width>
+      <x>400</x>
+      <y>130</y>
+      <width>161</width>
       <height>21</height>
      </rect>
     </property>
@@ -324,7 +324,7 @@
    <widget class="QLabel" name="checkLBL">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>250</y>
       <width>128</width>
       <height>21</height>
@@ -340,7 +340,7 @@
       <x>40</x>
       <y>400</y>
       <width>301</width>
-      <height>131</height>
+      <height>151</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -411,8 +411,8 @@
    <widget class="QPushButton" name="closeCMDB">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>380</y>
+      <x>520</x>
+      <y>390</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -456,10 +456,10 @@
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>270</x>
       <y>280</y>
-      <width>91</width>
-      <height>81</height>
+      <width>114</width>
+      <height>88</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
@@ -525,6 +525,59 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="userParamLBL_4">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>170</y>
+      <width>111</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>80</width>
+      <height>30</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>120</width>
+      <height>30</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Subject Group:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="userParamValLBL_4">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>190</y>
+      <width>50</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>50</width>
+      <height>30</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>001</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

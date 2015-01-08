@@ -19,7 +19,7 @@ class TestExecution : public QDialog
     Q_OBJECT
 
 public:
-    explicit TestExecution(int testNo,  QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent = 0);
+    explicit TestExecution(int testNo, int userGroup, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent = 0);
     ~TestExecution();
 
 private slots:
@@ -39,6 +39,7 @@ private:
     Ui::TestExecution *ui;
     applicationHandler *appHND;
     int testNo;
+    int userGroup;
     int currentSeqNo;
     int currentSeqCnt;
     int runState;

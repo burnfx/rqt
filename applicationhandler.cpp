@@ -33,10 +33,10 @@ void applicationHandler::closeGUI()
     qDebug() << "applicationHandler says: GUI closed";
 }
 
-void applicationHandler::selectVideoTrack(int blockNum, int seqNum)
+void applicationHandler::selectVideoTrack(int blockNum, int userGroup, int seqNum)
 {
-    qDebug() << "applicationHandler says: blockNum = " << blockNum << ", seqNum = " << seqNum;
-    std::string stdstr = recordFiles[recordIDs[blockNum-1][seqNum][0]][recordIDs[blockNum-1][seqNum][1]];
+    qDebug() << "applicationHandler says: blockNum = " << blockNum << ", userGroup = " << userGroup << ", seqNum = " << seqNum;
+    std::string stdstr = recordFiles[recordIDs[userGroup-1][blockNum-1][seqNum][0]][recordIDs[userGroup-1][blockNum-1][seqNum][1]];
     stdstr = "-file " + stdstr;
     char *str = &stdstr[0];
     sendToServer(str);

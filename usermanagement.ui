@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>298</width>
-    <height>327</height>
+    <width>358</width>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>248</width>
-     <height>251</height>
+     <width>301</width>
+     <height>283</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -118,7 +118,7 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>80</width>
+        <width>120</width>
         <height>30</height>
        </size>
       </property>
@@ -146,7 +146,7 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>100</width>
+        <width>150</width>
         <height>30</height>
        </size>
       </property>
@@ -158,7 +158,7 @@
     <item row="5" column="1">
      <widget class="QLineEdit" name="birthdayTXT"/>
     </item>
-    <item row="6" column="0">
+    <item row="7" column="0">
      <widget class="QLabel" name="userParamLBL_3">
       <property name="minimumSize">
        <size>
@@ -177,7 +177,7 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
+    <item row="7" column="1">
      <widget class="QLabel" name="idLBL">
       <property name="text">
        <string>set after confirmation</string>
@@ -197,14 +197,36 @@
       </property>
      </widget>
     </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="groupTXT"/>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="userParamLBL_4">
+      <property name="minimumSize">
+       <size>
+        <width>80</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Subject Group (1-3):</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>280</y>
-     <width>269</width>
+     <y>310</y>
+     <width>301</width>
      <height>31</height>
     </rect>
    </property>

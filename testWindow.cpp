@@ -254,7 +254,7 @@ void testWindow::on_userCBX_currentTextChanged(const QString &arg1)
     if (arg1 == ""){return;}
     std::string userDetails =  getDBentry(arg1);
 
-    std::string userData[4];
+    std::string userData[5];
     int dataIndex = 0;
     for(unsigned int i = 0; i < userDetails.size(); i++)
     {
@@ -265,6 +265,7 @@ void testWindow::on_userCBX_currentTextChanged(const QString &arg1)
     ui->userParamValLBL_1->setText(QString::fromUtf8( userData[2].data(), userData[2].size() ));
     ui->userParamValLBL_2->setText(QString::fromUtf8( userData[3].data(), userData[3].size() ));
     ui->userParamValLBL_3->setText(QString::fromUtf8( userData[0].data(), userData[0].size() ));
+    ui->userParamValLBL_4->setText(QString::fromUtf8( userData[4].data(), userData[4].size() ));
     updateExecutedTests();
 }
 
@@ -350,7 +351,7 @@ void testWindow::openTestRecordingWindow(int bNum)
         }
     }
 
-    te = new TestExecution(bNum, ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
+    te = new TestExecution(bNum, ui->userParamValLBL_4->text().toInt() , ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
     te->show();
     QObject::connect(te, SIGNAL(recordsUpdated()), this, SLOT(exRecordUpdate()));
 }
