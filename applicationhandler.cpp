@@ -36,8 +36,8 @@ void applicationHandler::closeGUI()
 void applicationHandler::selectVideoTrack(int blockNum, int userGroup, int seqNum)
 {
     qDebug() << "applicationHandler says: blockNum = " << blockNum << ", userGroup = " << userGroup << ", seqNum = " << seqNum;
-    std::string stdstr = recordFiles[recordIDs[userGroup-1][blockNum-1][seqNum][0]][recordIDs[userGroup-1][blockNum-1][seqNum][1]];
-    stdstr = "-file " + stdstr;
+    std::string stdstr;
+    stdstr = "-file " + recordFiles[userGroup-1][blockNum-1][seqNum];
     char *str = &stdstr[0];
     sendToServer(str);
 }
