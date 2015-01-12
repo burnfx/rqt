@@ -37,6 +37,8 @@ void applicationHandler::selectVideoTrack(int blockNum, int userGroup, int seqNu
 {
     qDebug() << "applicationHandler says: blockNum = " << blockNum << ", userGroup = " << userGroup << ", seqNum = " << seqNum;
     std::string stdstr;
+    std::string test;
+    test = recordFiles[userGroup-1][blockNum-1][seqNum];
     stdstr = "-file " + recordFiles[userGroup-1][blockNum-1][seqNum];
     char *str = &stdstr[0];
     sendToServer(str);
@@ -46,7 +48,7 @@ void applicationHandler::selectVideoTrack()
 {
     qDebug() << "applicationHandler says: load eye slider demo file";
 
-    std::string stdstr = "-file e1d30l1m1r1h111";
+    std::string stdstr = "-file e1d60l1m1r1h111";
     char *str = &stdstr[0];
     sendToServer(str);
 }

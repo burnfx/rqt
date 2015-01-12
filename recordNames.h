@@ -11,5 +11,5 @@
 // column = range(1:5 = data reduction amount
 extern int recordIDs[3][9][10][2];
 
-extern std::string recordFiles[74][5];
+extern std::string recordFiles[3][9][10];
 #endif
