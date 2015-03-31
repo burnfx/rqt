@@ -8,11 +8,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <QString>
+#include <QDebug>
 
 
 #define SERVER_ADRESS "localhost"
 #define SERVER_PORT 1600
 #define MAX_MSG 256
+#define MAX_ACK 50
 
 int client;
 
@@ -25,6 +28,35 @@ void sendR(char** cmd) {
         exit(-1);
     }
     printf("%s\n", *cmd); fflush(stdout);
+
+
+    if (strcmp(*cmd, "-control play") == 0) {
+
+        int read_size;
+        char line[MAX_MSG];
+        char ack[MAX_ACK];
+        char param[MAX_MSG];
+        // receive answer
+        while ( (read_size = recv(client , line , MAX_MSG , 0)) >= 0) {
+            if (strncmp(line, "ack", 3) == 0) {
+                memset(ack, 0, MAX_ACK);
+                memset(param, 0, MAX_MSG);
+                if (sscanf(line, "%s %s", ack, param) > 0) {
+                    if (strcmp(ack, "ack") == 0)  {
+                       qDebug() << QString::fromLocal8Bit(param);
+                    }
+                }
+                else {
+                    qDebug() << "sscanf line failed or no ack1 oder ack0 received";
+                }
+                break;
+            }
+            else {
+               qDebug() << "strncmp line failed";
+            }
+            memset(line,0,MAX_MSG);
+        }
+    }
     return;
 }
 
