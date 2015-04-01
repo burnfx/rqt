@@ -46,7 +46,7 @@ TestExecution::TestExecution(int testNo, int userGroup, QString stUser, QString 
         labels[i] = new QLabel(this);
         labels[i]->setText(QString("Sequence %1").arg(i+1));
         ui->gridLayoutCMDB->addWidget(labels[i], i+1, 0);
-        for (int j=1; j <= 3; j++)
+        for (int j=1; j <= 1; j++)
         {
             buttons[cnt] = new testChoiceButton(i, j, this);
             ui->gridLayoutCMDB->addWidget(buttons[cnt], i+1, j);
@@ -72,7 +72,7 @@ TestExecution::~TestExecution()
     for (int i = 0; i < 10; ++i)
     {
         delete labels[i];
-        for (int j=1; j <= 3; j++)
+        for (int j=1; j <= 1; j++)
         {
             delete buttons[cnt];
             cnt++;
@@ -299,3 +299,18 @@ void TestExecution::updateCurrentSequence()
         }
     }
 }
+
+void TestExecution::keyPressEvent( QKeyEvent * event )
+{
+    if(event->key() == Qt::Key_L)
+    {
+         buttons[currentSeqNo]->decision(Qt::Key_Right);
+    }else if(event->key() == Qt::Key_J)
+    {
+        buttons[currentSeqNo]->decision(Qt::Key_Left);
+    }else if(event == upPressed)
+    {
+        buttons[currentSeqNo]->decision(Qt::Key_Up);
+    }
+}
+
