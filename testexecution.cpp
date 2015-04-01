@@ -308,9 +308,10 @@ void TestExecution::keyPressEvent( QKeyEvent * event )
     }else if(event->key() == Qt::Key_J)
     {
         buttons[currentSeqNo]->decision(Qt::Key_Left);
-    }else if(event == upPressed)
+    }else if(event->key() == Qt::Key_I)
     {
         buttons[currentSeqNo]->decision(Qt::Key_Up);
     }
+
 }
 

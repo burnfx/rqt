@@ -4,8 +4,13 @@
 #include <stdlib.h>
 #include <string>
 #include <unistd.h>
-
+#include <chrono>
+#include <ctime>
+using namespace std;
 #define MAX_BUF 50
+
+unsigned long applicationHandler::start_time = 0;
+
 
 char* applicationHandler::stringtoChar(std::string stdstr) {
     char *str;
@@ -24,7 +29,13 @@ char* applicationHandler::QStringtoChar(QString qstr) {
 
 applicationHandler::applicationHandler()
 {
-
+    for (int i = 0; i<10; i++){
+        for(int j = 0; j<10; j++){
+            for(int k = 0; k<2; k++){
+                timeForDecision[i][j][k] = 0;
+            }
+        }
+    }
 }
 
 void applicationHandler::closeGUI()
@@ -175,4 +186,21 @@ void applicationHandler::setTranslateBack_Offset(QString param)
     str.append(param);
     qDebug() << "applicationHandler says: " << str;
     sendToServer(str);
+}
+
+void applicationHandler::measureStopTime(int testNumber,int seqNumber)
+{
+    unsigned long stop_time = std::chrono::duration_cast<std::chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
+    unsigned long time_difference = stop_time - applicationHandler::start_time;
+    if(timeForDecision[testNumber][seqNumber][0] == 0){
+        timeForDecision[testNumber][seqNumber][0] = time_difference;
+        timeForDecision[testNumber][seqNumber][1] = time_difference;
+    }else{
+        timeForDecision[testNumber][seqNumber][1] = time_difference;
+    }
+    qDebug() << "applicationHandler says: time start time = " << applicationHandler::start_time << "stop time = " << stop_time << "time diff = " << time_difference;
+}
+void applicationHandler::setStartTime(unsigned long time)
+{
+    start_time = time;
 }

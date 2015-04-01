@@ -10,7 +10,7 @@
 #include <string.h>
 #include <QString>
 #include <QDebug>
-
+#include "applicationhandler.h"
 
 #define SERVER_ADRESS "localhost"
 #define SERVER_PORT 1600
@@ -44,6 +44,13 @@ void sendR(char** cmd) {
                 if (sscanf(line, "%s %s", ack, param) > 0) {
                     if (strcmp(ack, "ack") == 0)  {
                        qDebug() << QString::fromLocal8Bit(param);
+                       if (strcmp(ack, "ack") == 0) {
+                       unsigned long start_time = QString::fromLocal8Bit(param).QString::toULong();
+                       qDebug() << "client says: start time = " << start_time;
+                       applicationHandler::setStartTime(start_time);
+                       }
+                    } else{
+                        qDebug() << "variable ack != string ack";
                     }
                 }
                 else {

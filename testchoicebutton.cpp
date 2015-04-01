@@ -50,16 +50,16 @@ void testChoiceButton::decision(Qt::Key key){
         myColor = lightblue;
         this->setText("right");
         this->setStyleSheet("* { background-color: rgb(135,206,250); color: rgb(0, 0, 0)}");
-        //parent->appHnd->measureStopTime();
+        parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
     }else if(key == Qt::Key_Left)
     {
         myColor = darkblue;
         this->setText("left");
         this->setStyleSheet("* { background-color: rgb(30,144,255); color: rgb(0, 0, 0) }");
-        //parent->appHnd->measureStopTime();
+        parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
     }else if(key == Qt::Key_Up)
     {
-        //parent->appHnd->measureStopTime();
+        parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
         parent->goForward();
     }
 }

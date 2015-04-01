@@ -23,6 +23,9 @@ public:
     ~TestExecution();
     void measureStopTime(int val);
     void goForward(){this->on_fwdCMDB_clicked();}
+    applicationHandler * getAppHND(){return appHND;}
+    int getTestNumber(){return testNo;}
+    int getSeqNumber(){return currentSeqNo;}
 
 private slots:
     void on_okCMDB_clicked();
