@@ -59,7 +59,7 @@ void testChoiceButton::decision(Qt::Key key){
         parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
     }else if(key == Qt::Key_Up)
     {
-        parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
+        //parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
         parent->goForward();
     }
 }

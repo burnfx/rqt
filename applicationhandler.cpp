@@ -64,6 +64,15 @@ void applicationHandler::selectVideoTrack()
     sendToServer(str);
 }
 
+void applicationHandler::playBlackBackground()
+{
+    qDebug() << "applicationHandler says: load black background";
+
+    std::string stdstr = "-file black";
+    char *str = &stdstr[0];
+    sendToServer(str);
+}
+
 void applicationHandler::sendToServer(QString qstr) {
     qDebug() << qstr;
     char *str = QStringtoChar(qstr);
@@ -192,13 +201,15 @@ void applicationHandler::measureStopTime(int testNumber,int seqNumber)
 {
     unsigned long stop_time = std::chrono::duration_cast<std::chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
     unsigned long time_difference = stop_time - applicationHandler::start_time;
-    if(timeForDecision[testNumber][seqNumber][0] == 0){
+    if(timeForDecision[testNumber][seqNumber][0] == 0)
+    {
         timeForDecision[testNumber][seqNumber][0] = time_difference;
         timeForDecision[testNumber][seqNumber][1] = time_difference;
-    }else{
+    }else
+    {
         timeForDecision[testNumber][seqNumber][1] = time_difference;
     }
-    qDebug() << "applicationHandler says: time start time = " << applicationHandler::start_time << "stop time = " << stop_time << "time diff = " << time_difference;
+    qDebug() << "applicationHandler says: start time = " << applicationHandler::start_time << "stop time = " << stop_time << "time diff = " << time_difference;
 }
 void applicationHandler::setStartTime(unsigned long time)
 {

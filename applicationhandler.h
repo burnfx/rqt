@@ -19,6 +19,7 @@ public:
     void sendToServer(QString str);
     void selectVideoTrack();
     void selectVideoTrack(int blockNum, int userGroup, int seqNum);
+    void playBlackBackground();
     //void playPauseTrack(int run_flag);
     //void stopTrack();
     void debugHandle();

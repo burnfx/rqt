@@ -22,7 +22,7 @@ public:
     explicit TestExecution(int testNo, int userGroup, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent = 0);
     ~TestExecution();
     void measureStopTime(int val);
-    void goForward(){this->on_fwdCMDB_clicked();}
+    void goForward();
     applicationHandler * getAppHND(){return appHND;}
     int getTestNumber(){return testNo;}
     int getSeqNumber(){return currentSeqNo;}
@@ -47,7 +47,8 @@ private:
     int userGroup;
     int currentSeqNo;
     int currentSeqCnt;
-    int runState;
+    int currentWaitCnt;
+    enum runState {stop=0, running, waiting } myRunState;
     std::string userDBCopyName;
     std::string userDBFileName;
     std::string supervisor;
