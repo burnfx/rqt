@@ -18,7 +18,7 @@ public:
     void closeGUI();
     void sendToServer(QString str);
     void selectVideoTrack();
-    void selectVideoTrack(int blockNum, int userGroup, int seqNum);
+    void selectVideoTrack(int seqNum);
     void playBlackBackground();
     //void playPauseTrack(int run_flag);
     //void stopTrack();
@@ -33,10 +33,10 @@ public:
     void setcDecay(QString str);
     void setViewport_Offset(QString str);
     void setTranslateBack_Offset(QString str);
-    void measureStopTime(int testNumber,int seqNumber);
+    void measureStopTime(int seqNumber);
     static void setStartTime(unsigned long time);
 
-    unsigned long timeForDecision[10][10][2];
+    unsigned long timeForDecision[10][2];
     static unsigned long start_time;
 
 private:

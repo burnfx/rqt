@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>638</height>
+    <width>538</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>600</y>
+     <y>490</y>
      <width>241</width>
      <height>29</height>
     </rect>
@@ -48,28 +48,6 @@
        <string>Exit Test Now</string>
       </property>
      </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>490</y>
-     <width>341</width>
-     <height>103</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Comments:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="textEdit"/>
     </item>
    </layout>
   </widget>
@@ -157,17 +135,30 @@
     <string>Test No. 1</string>
    </property>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
+  <widget class="QWidget" name="horizontalLayoutWidget_3">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>110</y>
      <width>341</width>
-     <height>371</height>
+     <height>80</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayoutCMDB">
-    <item row="0" column="3">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QLabel" name="runningLBL">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Running:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="remainLBL">
       <property name="maximumSize">
        <size>
@@ -180,7 +171,7 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="4">
+    <item>
      <widget class="QLabel" name="timeLBL">
       <property name="maximumSize">
        <size>
@@ -193,16 +184,91 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QLabel" name="runningLBL">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>40</height>
-       </size>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>200</y>
+     <width>341</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="4" column="0">
+     <widget class="QLabel" name="ldtimeLBL">
+      <property name="text">
+       <string>Last Decision Time</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="seqLBL">
+      <property name="text">
+       <string>Sequence</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="qualLBL">
+      <property name="text">
+       <string>Quality</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="decLBL">
+      <property name="text">
+       <string>Decision</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="fdtimeLBL">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
       </property>
       <property name="text">
-       <string>Running:</string>
+       <string>First Decision Time</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="seqVal">
+      <property name="text">
+       <string>?</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="qualVal">
+      <property name="text">
+       <string>?</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="decVal">
+      <property name="text">
+       <string>?</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="fdtimeVal">
+      <property name="text">
+       <string>?</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="ldtimeVal">
+      <property name="text">
+       <string>?</string>
       </property>
      </widget>
     </item>

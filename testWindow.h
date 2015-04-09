@@ -38,13 +38,15 @@ private slots:
     void on_setFileCMDB_clicked();
     void on_setModeCMDB_clicked();
 
+    void on_start_test_button_clicked();
+
 private:
     Ui::testWindow *ui;
     userManagement *um;
     TestExecution *te;
     applicationHandler *appHND;
     QStringList userList;
-    testExecButton *buttons[9];
+    testExecButton *start_test_button;
 };
 
 #endif // testWindow_H

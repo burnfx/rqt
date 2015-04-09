@@ -16,21 +16,19 @@ QString PLAY = "play";
 QString PAUSE = "pause";
 
 
-TestExecution::TestExecution(int testNo, int userGroup, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::TestExecution)
+TestExecution::TestExecution(applicationHandler *appHND, QWidget *parent) : QDialog(parent), ui(new Ui::TestExecution)
 {
     ui->setupUi(this);
     this->appHND = appHND;
-    this->testNo = testNo;
-    this->stUser = stUser;
-    this->userID = userID;
-    this->userGroup = userGroup;
-    this->supervisor = sup.toUtf8().constData();
+    //this->stUser = stUser;
+    //this->userID = userID;
+    //this->supervisor = sup.toUtf8().constData();
     this->myRunState = stop;
     this->currentSeqNo = 0;
     this->currentSeqCnt = MAX_TRACK_TIME;
-    ui->titleLBL->setText(QString("Test No. %1").arg(testNo));
+
+
+    ui->titleLBL->setText(QString("Test"));
 
     ui->gridLayoutCMDB->addWidget(ui->runningLBL, 0, 0);
     ui->gridLayoutCMDB->addWidget(ui->remainLBL, 0, 2);
@@ -43,6 +41,7 @@ TestExecution::TestExecution(int testNo, int userGroup, QString stUser, QString 
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 
     int cnt = 0;
+    /*
     for (int i = 0; i < 10; ++i)
     {
         labels[i] = new QLabel(this);
@@ -59,11 +58,11 @@ TestExecution::TestExecution(int testNo, int userGroup, QString stUser, QString 
 
     // set file names
     userDBCopyName = "temp_DB_Copy.txt";
-    userDBFileName = userID.toUtf8().constData();
+    //userDBFileName = userID.toUtf8().constData();
     userDBFileName = "testdata_userID_" + userDBFileName + ".txt";
 
     // send initial file name
-    appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
+    appHND->selectVideoTrack(currentSeqNo);
 }
 
 TestExecution::~TestExecution()
@@ -91,6 +90,8 @@ void TestExecution::on_okCMDB_clicked()
     int complete = 1;
     int *complete_flag = &complete;
     std::string seq[10];
+
+    /*
     for (int i = 0; i < 30; i+=3)
     {
         std::stringstream ss[4];
@@ -109,30 +110,21 @@ void TestExecution::on_okCMDB_clicked()
             return;
         }
     }
+    */
 
     // make sure application also stops
     myRunState = stop;
     appHND->setControl(STOP);
 
     //read comments
-    std::string comments = ui->textEdit->toPlainText().toUtf8().constData();
+    //std::string comments = ui->textEdit->toPlainText().toUtf8().constData();
 
     //open file with user id
     std::ofstream testDataFile;
     testDataFile.open(userDBFileName.c_str(), std::ofstream::out | std::ofstream::app);
 
-    // sequence block number, complete_flag
-    std::stringstream ss;
-    ss << testNo;
-    if (*complete_flag == 0)
-    {
-        testDataFile << "testBlock," << testNo  << ",complete=false,";
-    }
-    else
-    {
-        testDataFile << "testBlock," << testNo  << ",complete=true,";
-    }
 
+    /*
     // date, time, supervisor
     QDateTime dateTime = QDateTime::currentDateTime();
     std::string sDateTime = dateTime.toString("dd.MM.yyyy'-'hh:mm:ss").toUtf8().constData();
@@ -147,14 +139,15 @@ void TestExecution::on_okCMDB_clicked()
 
     // comment string - remove newlines "\n"
     char delC[] = "\n";
-    comments.erase (std::remove(comments.begin(), comments.end(), delC[0]), comments.end());
-    testDataFile << "comments," << comments << "\n";
+    //comments.erase (std::remove(comments.begin(), comments.end(), delC[0]), comments.end());
+    //testDataFile << "comments," << comments << "\n";
 
     // close file
     testDataFile.close();
+    */
 
     // update executed test information
-    emit recordsUpdated();
+    //emit recordsUpsdated();
 
     // close window
     this->close();
@@ -200,7 +193,7 @@ void TestExecution::update()
                 myRunState = running;
                 ui->remainLBL->setText("Remaining: ");
                 ui->timeLBL->setText(QString::number(currentSeqCnt));
-                appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
+                appHND->selectVideoTrack(currentSeqNo);
                 appHND->setControl(PLAY);
                 timer->start(1000);
             }
@@ -275,7 +268,7 @@ void TestExecution::on_backCMDB_clicked()
     ui->timeLBL->setText(QString::number(currentSeqCnt));
     // go one track back
     if (currentSeqNo) {currentSeqNo--;}
-    appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
+    appHND->selectVideoTrack(currentSeqNo);
     if (myRunState == running) {
         appHND->setControl(PLAY);
     }
@@ -295,7 +288,7 @@ void TestExecution::on_fwdCMDB_clicked()
     // go one track forward, stop at the end
     if (currentSeqNo < 9) {currentSeqNo++;}
     else {myRunState = stop;}
-    appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
+    appHND->selectVideoTrack(currentSeqNo);
     if (myRunState == running) {
         appHND->setControl(PLAY);
     }
@@ -358,5 +351,5 @@ void TestExecution::goForward(){
     timer->start(1000);
     // go one track forward, stop at the end
     //if (currentSeqNo < 9) {currentSeqNo++;}
-    //appHND->selectVideoTrack(testNo,userGroup,currentSeqNo);
+    //appHND->selectVideoTrack(currentSeqNo);
 }

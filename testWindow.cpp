@@ -22,12 +22,10 @@ testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindo
     //appHND->setMode(mode);
 
     // set up test block buttons
-    for (int i = 1; i < 10; ++i)
-    {
-        buttons[i-1] = new testExecButton(i, this);
-        ui->testButtonGrid->addWidget(buttons[i-1], floor((i-1)/3), (i-1)%3);
-        connect(buttons[i-1], SIGNAL(clicked(int)), this, SLOT(openTestRecordingWindow(int)));
-    }
+
+    //start_test_button = new testExecButton(this);
+    //connect(start_test_button, SIGNAL(clicked(int)), this, SLOT(openTestRecordingWindow(int)));
+
 
     // get user list from DB
     std::ifstream testFile(userDBFileName);
@@ -68,10 +66,6 @@ testWindow::testWindow(applicationHandler *appHND, QWidget *parent) : QMainWindo
 testWindow::~testWindow()
 {
     appHND->closeGUI();
-    for (int i = 1; i < 10; ++i)
-    {
-        delete buttons[i-1];
-    }
     delete ui;
 }
 
@@ -175,10 +169,6 @@ void testWindow::updateUserList(QString userName, int addNewIfOne)
 void testWindow::updateExecutedTests()
 {
     // set all buttons grey first
-    for (int i=1; i<10; i++)
-    {
-        buttons[i-1]->setStyleSheet("* { background-color: rgb(145,145,145) }");
-    }
 
     std::string tempStr = ui->userParamValLBL_3->text().toUtf8().constData();
     std::string userDBFile = "testdata_userID_" + tempStr + ".txt";
@@ -186,6 +176,7 @@ void testWindow::updateExecutedTests()
     std::ifstream readFile(userDBFile.c_str());
     std::string line;
 
+    /*
     // now check for test already executed
     if (readFile.is_open())
     {
@@ -230,6 +221,7 @@ void testWindow::updateExecutedTests()
         }
         readFile.close();
     }
+    */
 }
 
 
@@ -273,6 +265,7 @@ void testWindow::on_userCBX_currentTextChanged(const QString &arg1)
 // Start test No X, Open new window accordingly to save results
 void testWindow::openTestRecordingWindow(int bNum)
 {
+    /*
     // set file names
     std::string userDBCopyName = "temp_DB_Copy.txt";
     std::string userDBFileNameLocal = ui->userParamValLBL_3->text().toUtf8().constData();
@@ -351,9 +344,10 @@ void testWindow::openTestRecordingWindow(int bNum)
         }
     }
 
-    te = new TestExecution(bNum, ui->userParamValLBL_4->text().toInt() , ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
+    te = new TestExecution(ui->userCBX->currentText(), ui->userParamValLBL_3->text(), ui->supervisorEdit->text(), appHND, this);
     te->show();
     QObject::connect(te, SIGNAL(recordsUpdated()), this, SLOT(exRecordUpdate()));
+    */
 }
 
 
@@ -408,4 +402,12 @@ void testWindow::on_setFileCMDB_clicked()
 void testWindow::on_setModeCMDB_clicked()
 {
     appHND->setMode(ui->modeLineEdit->text());
+}
+
+void testWindow::on_start_test_button_clicked()
+{
+    //TestExecution w(appHND,this);
+    te = new TestExecution(appHND, this);
+    te->show();
+    //w->show();
 }

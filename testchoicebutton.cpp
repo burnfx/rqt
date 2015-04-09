@@ -6,6 +6,7 @@ testChoiceButton::testChoiceButton(int rowNum, int typeNum,TestExecution *parent
     myDigit = 10;
     mySeqNo = rowNum;
     myType = (types)typeNum;
+    /*
     if (typeNum == 1)
     {
         setText("left");
@@ -14,6 +15,8 @@ testChoiceButton::testChoiceButton(int rowNum, int typeNum,TestExecution *parent
     {
         setText("right");
     }
+    */
+    setText("undecided");
     myColor = grey;
     this->setStyleSheet("* { background-color: rgb(145,145,145) }");
     //setText(QString::number(myDigit));
@@ -50,13 +53,13 @@ void testChoiceButton::decision(Qt::Key key){
         myColor = lightblue;
         this->setText("right");
         this->setStyleSheet("* { background-color: rgb(135,206,250); color: rgb(0, 0, 0)}");
-        parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
+        parent->getAppHND()->measureStopTime(parent->getSeqNumber());
     }else if(key == Qt::Key_Left)
     {
         myColor = darkblue;
         this->setText("left");
         this->setStyleSheet("* { background-color: rgb(30,144,255); color: rgb(0, 0, 0) }");
-        parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());
+        parent->getAppHND()->measureStopTime(parent->getSeqNumber());
     }else if(key == Qt::Key_Up)
     {
         //parent->getAppHND()->measureStopTime(parent->getTestNumber(),parent->getSeqNumber());

@@ -9,7 +9,7 @@
 // third dimension = row/column of record file
 // row = range(1:152) = filename = setup
 // column = range(1:5 = data reduction amount
-extern int recordIDs[3][9][10][2];
+extern int recordIDs[2];
 
-extern std::string recordFiles[3][9][10];
+extern std::string recordFiles[10];
 #endif

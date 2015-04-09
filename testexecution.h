@@ -19,12 +19,11 @@ class TestExecution : public QDialog
     Q_OBJECT
 
 public:
-    explicit TestExecution(int testNo, int userGroup, QString stUser, QString userID, QString sup, applicationHandler *appHND, QWidget *parent = 0);
+    explicit TestExecution(applicationHandler *appHND, QWidget *parent = 0);
     ~TestExecution();
     void measureStopTime(int val);
     void goForward();
     applicationHandler * getAppHND(){return appHND;}
-    int getTestNumber(){return testNo;}
     int getSeqNumber(){return currentSeqNo;}
 
 private slots:
@@ -43,7 +42,6 @@ private:
     void updateCurrentSequence();
     Ui::TestExecution *ui;
     applicationHandler *appHND;
-    int testNo;
     int userGroup;
     int currentSeqNo;
     int currentSeqCnt;
@@ -51,12 +49,10 @@ private:
     enum runState {stop=0, running, waiting } myRunState;
     std::string userDBCopyName;
     std::string userDBFileName;
-    std::string supervisor;
-    QString stUser;
-    QString userID;
+
     QTimer *timer;
-    testChoiceButton *buttons[10];
-    QLabel *labels[10];
+    //testChoiceButton *buttons[10];
+    //QLabel *labels[10];
 protected:
     void keyPressEvent(QKeyEvent * event);
 };

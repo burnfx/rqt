@@ -11,10 +11,10 @@ class testExecButton : public QPushButton
     Q_OBJECT
 
 public:
-    testExecButton(int blockNum, QWidget *parent);
+    testExecButton(QWidget *parent);
 
 signals:
-    void clicked(int digit);
+    void clicked();
 
 private slots:
     void reemitClicked();

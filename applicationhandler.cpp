@@ -30,10 +30,8 @@ char* applicationHandler::QStringtoChar(QString qstr) {
 applicationHandler::applicationHandler()
 {
     for (int i = 0; i<10; i++){
-        for(int j = 0; j<10; j++){
-            for(int k = 0; k<2; k++){
-                timeForDecision[i][j][k] = 0;
-            }
+        for(int k = 0; k<2; k++){
+            timeForDecision[i][k] = 0;
         }
     }
 }
@@ -44,13 +42,13 @@ void applicationHandler::closeGUI()
     qDebug() << "applicationHandler says: GUI closed";
 }
 
-void applicationHandler::selectVideoTrack(int blockNum, int userGroup, int seqNum)
+void applicationHandler::selectVideoTrack(int seqNum)
 {
-    qDebug() << "applicationHandler says: blockNum = " << blockNum << ", userGroup = " << userGroup << ", seqNum = " << seqNum;
+    qDebug() << "applicationHandler says: seqNum = " << seqNum;
     std::string stdstr;
-    std::string test;
-    test = recordFiles[userGroup-1][blockNum-1][seqNum];
-    stdstr = "-file " + recordFiles[userGroup-1][blockNum-1][seqNum];
+    //std::string test;
+    //test = recordFiles[seqNum];
+    stdstr = "-file " + recordFiles[seqNum];
     char *str = &stdstr[0];
     sendToServer(str);
 }
@@ -197,17 +195,17 @@ void applicationHandler::setTranslateBack_Offset(QString param)
     sendToServer(str);
 }
 
-void applicationHandler::measureStopTime(int testNumber,int seqNumber)
+void applicationHandler::measureStopTime(int seqNumber)
 {
     unsigned long stop_time = std::chrono::duration_cast<std::chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
     unsigned long time_difference = stop_time - applicationHandler::start_time;
-    if(timeForDecision[testNumber][seqNumber][0] == 0)
+    if(timeForDecision[seqNumber][0] == 0)
     {
-        timeForDecision[testNumber][seqNumber][0] = time_difference;
-        timeForDecision[testNumber][seqNumber][1] = time_difference;
+        timeForDecision[seqNumber][0] = time_difference;
+        timeForDecision[seqNumber][1] = time_difference;
     }else
     {
-        timeForDecision[testNumber][seqNumber][1] = time_difference;
+        timeForDecision[seqNumber][1] = time_difference;
     }
     qDebug() << "applicationHandler says: start time = " << applicationHandler::start_time << "stop time = " << stop_time << "time diff = " << time_difference;
 }
