@@ -4,7 +4,7 @@
 //#include "testWindow.h"
 #include <QDialog>
 #include <QGridLayout>
-#include "testchoicebutton.h"
+
 #include <string>
 #include "applicationhandler.h"
 #include "closewindow.h"
@@ -40,13 +40,36 @@ signals:
 
 private:
     void updateCurrentSequence();
+    void updateDecisionTime(unsigned long time);
+    void saveDecisionToFile();
     Ui::TestExecution *ui;
     applicationHandler *appHND;
     int userGroup;
     int currentSeqNo;
+    int currentQuality = 100;
+    bool firstDecision = true;
+    bool ffwd = false;
+    bool expired = false;
+    int currentDecisionTime;
+
+
+    //std::array<std::vector<decision>, MAX_SEQUENCES> firstDecision;
+    //std::array<std::vector<decision>, MAX_SEQUENCES> lastDecision;
+    //std::array<std::vector<int>, MAX_SEQUENCES> fDTime;
+    //std::array<std::vector<int>, MAX_SEQUENCES> lDTime;
+
+    int decisionTime[10][2];
+
+
+
+
     int currentSeqCnt;
     int currentWaitCnt;
-    enum runState {stop=0, running, waiting } myRunState;
+    enum runState { stop=0, running, waiting } myRunState;
+    enum decision { LEFT=0, UNDECIDED, RIGHT} currentDecision = UNDECIDED;
+    QString decisionMap[3] = {"LEFT", "UNDECIDED","RIGHT"};
+
+
     std::string userDBCopyName;
     std::string userDBFileName;
 

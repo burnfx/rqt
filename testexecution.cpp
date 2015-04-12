@@ -1,7 +1,8 @@
 #include "testexecution.h"
 #include "ui_testexecution.h"
 #include <QGridLayout>
-#include "testchoicebutton.h"
+#include <QTimer>
+#include <QKeyEvent>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -10,6 +11,7 @@
 #define MAX_TRACK_TIME 10;
 #define WAIT_TIME_BLACK_BACKGROUND 3
 #define WAIT_TIME_BLACK_BACKGROUND_EXPIRED 30
+#define MAX_SEQUENCES 10
 
 QString STOP = "stop";
 QString PLAY = "play";
@@ -30,9 +32,9 @@ TestExecution::TestExecution(applicationHandler *appHND, QWidget *parent) : QDia
 
     ui->titleLBL->setText(QString("Test"));
 
-    ui->gridLayoutCMDB->addWidget(ui->runningLBL, 0, 0);
-    ui->gridLayoutCMDB->addWidget(ui->remainLBL, 0, 2);
-    ui->gridLayoutCMDB->addWidget(ui->timeLBL, 0, 3);
+    //ui->gridLayoutCMDB->addWidget(ui->runningLBL, 0, 0);
+    //ui->gridLayoutCMDB->addWidget(ui->remainLBL, 0, 2);
+    //ui->gridLayoutCMDB->addWidget(ui->timeLBL, 0, 3);
     ui->timeLBL->setText("not started yet");
 
     timer = new QTimer(this);
@@ -54,7 +56,8 @@ TestExecution::TestExecution(applicationHandler *appHND, QWidget *parent) : QDia
             cnt++;
         }
     }
-    updateCurrentSequence();
+    */
+    //updateCurrentSequence();
 
     // set file names
     userDBCopyName = "temp_DB_Copy.txt";
@@ -67,18 +70,8 @@ TestExecution::TestExecution(applicationHandler *appHND, QWidget *parent) : QDia
 
 TestExecution::~TestExecution()
 {
-//    killTimer(timer);
+    //killTimer(timer);
     delete timer;
-    int cnt = 0;
-    for (int i = 0; i < 10; ++i)
-    {
-        delete labels[i];
-        for (int j=1; j <= 1; j++)
-        {
-            delete buttons[cnt];
-            cnt++;
-        }
-    }
     emit recordsUpdated();
     delete ui;
 }
@@ -180,52 +173,74 @@ void TestExecution::update()
     {
         return;
     }
-    else if(myRunState == waiting)
-    {
-        if (!currentWaitCnt--)
-        {
+    else if(myRunState == waiting) {
+
+
+        if (!currentWaitCnt--) {
+            // save
+
             // reset sequence counter
             currentSeqCnt = MAX_TRACK_TIME;
-            // go one track forward, stop at the end
-            if (currentSeqNo < 9)
-            {
-                currentSeqNo++;
-                myRunState = running;
-                ui->remainLBL->setText("Remaining: ");
-                ui->timeLBL->setText(QString::number(currentSeqCnt));
-                appHND->selectVideoTrack(currentSeqNo);
-                appHND->setControl(PLAY);
-                timer->start(1000);
-            }
-            else
-            {
-                myRunState = stop;
-            }
-        }else
-        {
+
+            currentSeqNo++;
+            myRunState = running;
+            ffwd = false;
+            expired = false;
+            firstDecision = true;
+
+
+            // LABELS
+            // timer
+            ui->remainLBL->setText("Remaining: ");
+            ui->timeLBL->setText(QString::number(currentSeqCnt));
+
+            // resetting test information
+            ui->seqVal->setText(QString::number(currentSeqNo));
+            ui->qualVal->setText(QString::number(currentQuality));
+            ui->decVal->setText("undecided");
+            ui->fdtimeVal->setText("-1");
+            ui->ldtimeVal->setText("-1");
+
+            // start next sequence
+            appHND->selectVideoTrack(currentSeqNo);
+            appHND->setControl(PLAY);
             timer->start(1000);
+
+        }
+        else {
+            if (ffwd && expired) {
+                currentWaitCnt = WAIT_TIME_BLACK_BACKGROUND;
+                expired = false;
+            }
             ui->timeLBL->setText(QString::number(currentWaitCnt));
+            timer->start(1000);
         }
 
 
-    }else if(myRunState == running)
-    {
-        if (!currentSeqCnt--)
-        {
+    } else if(myRunState == running) {
+        if (!currentSeqCnt--) {
             myRunState = waiting;
-            currentWaitCnt = WAIT_TIME_BLACK_BACKGROUND_EXPIRED;
+            saveDecisionToFile();
+            currentDecision = UNDECIDED;
+            if (ffwd == true) {
+                currentWaitCnt = WAIT_TIME_BLACK_BACKGROUND;
+            }
+            else {
+                currentWaitCnt = WAIT_TIME_BLACK_BACKGROUND_EXPIRED;
+                expired = true;
+            }
             appHND->playBlackBackground();
             appHND->setControl(PLAY);
             ui->remainLBL->setText("Waiting: ");
             ui->timeLBL->setText(QString::number(currentWaitCnt));
             timer->start(1000);
-        }else
-        {
+        }
+        else {
             ui->timeLBL->setText(QString::number(currentSeqCnt));
             timer->start(1000);
         }
     }
-    updateCurrentSequence();
+    //updateCurrentSequence();
 }
 
 void TestExecution::on_playPauseCMDB_clicked()
@@ -244,7 +259,7 @@ void TestExecution::on_playPauseCMDB_clicked()
         ui->timeLBL->setText("paused");
         appHND->setControl(PAUSE);
     }
-    updateCurrentSequence();
+    //updateCurrentSequence();
 }
 
 void TestExecution::on_stopCMDB_clicked()
@@ -253,7 +268,7 @@ void TestExecution::on_stopCMDB_clicked()
     currentSeqCnt = MAX_TRACK_TIME;
     ui->timeLBL->setText("stopped");
     appHND->setControl(STOP);
-    updateCurrentSequence();
+    //updateCurrentSequence();
 }
 
 void TestExecution::on_backCMDB_clicked()
@@ -272,29 +287,15 @@ void TestExecution::on_backCMDB_clicked()
     if (myRunState == running) {
         appHND->setControl(PLAY);
     }
-    updateCurrentSequence();
+    //updateCurrentSequence();
 }
 
 void TestExecution::on_fwdCMDB_clicked()
 {
-    if(myRunState == waiting){myRunState = running;}
-    // if still running reset timer
-    if (myRunState == running) {
-        timer->start(1000);
-    }
-    // reset sequence counter
-    currentSeqCnt = MAX_TRACK_TIME;
-    ui->timeLBL->setText(QString::number(currentSeqCnt));
-    // go one track forward, stop at the end
-    if (currentSeqNo < 9) {currentSeqNo++;}
-    else {myRunState = stop;}
-    appHND->selectVideoTrack(currentSeqNo);
-    if (myRunState == running) {
-        appHND->setControl(PLAY);
-    }
-    updateCurrentSequence();
+    goForward();
 }
 
+/*
 void TestExecution::updateCurrentSequence()
 {
     for (int i=0; i < 10; i++)
@@ -302,54 +303,76 @@ void TestExecution::updateCurrentSequence()
         if (i!=currentSeqNo)
         {
             //make grey
-            labels[i]->setStyleSheet("QLabel { background-color : rgb(199,199,199) }");
+            //labels[i]->setStyleSheet("QLabel { background-color : rgb(199,199,199) }");
         }
         else
         {
             if (myRunState == running)
             {
                 // make green
-                labels[i]->setStyleSheet("QLabel { background-color : rgb(78,238,148) }");
+                //labels[i]->setStyleSheet("QLabel { background-color : rgb(78,238,148) }");
             }
             else if (myRunState == stop)
             {
                 // make red
-                labels[i]->setStyleSheet("QLabel { background-color : rgb(238,99,99) }");
+                //labels[i]->setStyleSheet("QLabel { background-color : rgb(238,99,99) }");
             }
             else if (myRunState = waiting)
             {
                 // make blue
-                labels[i]->setStyleSheet("QLabel { background-color : rgb(50,99,200) }");
+                //labels[i]->setStyleSheet("QLabel { background-color : rgb(50,99,200) }");
             }
         }
     }
 }
+*/
 
 void TestExecution::keyPressEvent( QKeyEvent * event )
 {
-    if(event->key() == Qt::Key_L)
-    {
-         buttons[currentSeqNo]->decision(Qt::Key_Right);
-    }else if(event->key() == Qt::Key_J)
-    {
-        buttons[currentSeqNo]->decision(Qt::Key_Left);
-    }else if(event->key() == Qt::Key_I)
-    {
-        buttons[currentSeqNo]->decision(Qt::Key_Up);
+    if (myRunState == running) {
+        if (event->key() == Qt::Key_L) {
+            currentDecisionTime = appHND->measureStopTime(currentSeqNo);
+            updateDecisionTime(currentDecisionTime);
+            currentDecision = RIGHT;
+            ui->decVal->setText("RIGHT");
+        }
+        else if (event->key() == Qt::Key_J) {
+            currentDecisionTime = appHND->measureStopTime(currentSeqNo);
+            updateDecisionTime(currentDecisionTime);
+            currentDecision = LEFT;
+            ui->decVal->setText("LEFT");
+        }
+    }
+
+    if (myRunState == running || (myRunState == waiting && ffwd==false)) {
+        if (event->key() == Qt::Key_I) {
+            goForward();
+        }
     }
 
 }
 
+void TestExecution::updateDecisionTime(unsigned long time) {
+    if (firstDecision) {
+        firstDecision = false;
+        ui->fdtimeVal->setText(QString::number(currentDecisionTime));
+    } else {
+        ui->ldtimeVal->setText(QString::number(currentDecisionTime));
+    }
+}
+
 void TestExecution::goForward(){
-    // reset sequence counter to the wait time before next sequence starts
-    currentWaitCnt = WAIT_TIME_BLACK_BACKGROUND;
-    ui->remainLBL->setText("Waiting: ");
-    ui->timeLBL->setText(QString::number(currentWaitCnt));
-    myRunState = waiting;
-    appHND->playBlackBackground();
-    appHND->setControl(PLAY);
-    timer->start(1000);
-    // go one track forward, stop at the end
-    //if (currentSeqNo < 9) {currentSeqNo++;}
-    //appHND->selectVideoTrack(currentSeqNo);
+    // reset
+    ffwd = true;
+    currentSeqCnt = 0;
+    update();
+}
+
+void TestExecution::saveDecisionToFile() {
+    if (currentDecision) {
+        qDebug() << currentSeqNo << currentQuality << currentDecision;
+    }
+    else {
+        qDebug() << currentSeqNo << currentQuality << currentDecision << ui->fdtimeVal->text().toInt() << ui->ldtimeVal->text().toInt();
+    }
 }

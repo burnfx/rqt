@@ -195,7 +195,7 @@
      <height>241</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout_2">
+   <layout class="QGridLayout" name="gridLayout">
     <item row="4" column="0">
      <widget class="QLabel" name="ldtimeLBL">
       <property name="text">

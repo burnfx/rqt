@@ -72,7 +72,7 @@ void applicationHandler::playBlackBackground()
 }
 
 void applicationHandler::sendToServer(QString qstr) {
-    qDebug() << qstr;
+    // qDebug() << qstr;
     char *str = QStringtoChar(qstr);
     sendR(&str);
     usleep(100);
@@ -195,10 +195,11 @@ void applicationHandler::setTranslateBack_Offset(QString param)
     sendToServer(str);
 }
 
-void applicationHandler::measureStopTime(int seqNumber)
+unsigned long applicationHandler::measureStopTime(int seqNumber)
 {
     unsigned long stop_time = std::chrono::duration_cast<std::chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
     unsigned long time_difference = stop_time - applicationHandler::start_time;
+    /*
     if(timeForDecision[seqNumber][0] == 0)
     {
         timeForDecision[seqNumber][0] = time_difference;
@@ -207,7 +208,9 @@ void applicationHandler::measureStopTime(int seqNumber)
     {
         timeForDecision[seqNumber][1] = time_difference;
     }
-    qDebug() << "applicationHandler says: start time = " << applicationHandler::start_time << "stop time = " << stop_time << "time diff = " << time_difference;
+    */
+    // qDebug() << "applicationHandler says: start time = " << applicationHandler::start_time << "stop time = " << stop_time << "time diff = " << time_difference;
+    return time_difference;
 }
 void applicationHandler::setStartTime(unsigned long time)
 {

@@ -2,10 +2,10 @@
 #define testWindow_H
 
 #include <QMainWindow>
+#include <QTimer>
 #include "usermanagement.h"
 #include "testexecution.h"
 #include "applicationhandler.h"
-#include "testexecbutton.h"
 #include "alreadyrecordedwindow.h"
 
 namespace Ui {
@@ -46,7 +46,7 @@ private:
     TestExecution *te;
     applicationHandler *appHND;
     QStringList userList;
-    testExecButton *start_test_button;
+    //testExecButton *start_test_button;
 };
 
 #endif // testWindow_H

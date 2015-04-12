@@ -33,7 +33,7 @@ public:
     void setcDecay(QString str);
     void setViewport_Offset(QString str);
     void setTranslateBack_Offset(QString str);
-    void measureStopTime(int seqNumber);
+    unsigned long measureStopTime(int seqNumber);
     static void setStartTime(unsigned long time);
 
     unsigned long timeForDecision[10][2];
