@@ -406,8 +406,7 @@ void testWindow::on_setModeCMDB_clicked()
 
 void testWindow::on_start_test_button_clicked()
 {
-    //TestExecution w(appHND,this);
-    te = new TestExecution(appHND, this);
+    int userID = ui->userParamValLBL_3->text().toInt();
+    te = new TestExecution(appHND, userID, this);
     te->show();
-    //w->show();
 }

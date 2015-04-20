@@ -16,29 +16,30 @@ SOURCES += main.cpp\
     usermanagement.cpp \
     testWindow.cpp \
     testexecution.cpp \
-    testchoicebutton.cpp \
     applicationhandler.cpp \
     client.cpp \
     recordNames.cpp \
     guistartup.cpp \
     closewindow.cpp \
     saveclosewindow.cpp \
-    testexecbutton.cpp \
-    alreadyrecordedwindow.cpp
+    alreadyrecordedwindow.cpp \
+    ../../Downloads/Telegram Desktop/AdaptiveStaircase.cpp \
+    ../../Downloads/Telegram Desktop/AdaptiveStaircase.cpp \
+    AdaptiveStaircase.cpp
 
 HEADERS  += \
     usermanagement.h \
     testWindow.h \
     testexecution.h \
-    testchoicebutton.h \
     applicationhandler.h \
     client.h \
     recordNames.h \
     guistartup.h \
     closewindow.h \
     saveclosewindow.h \
-    testexecbutton.h \
-    alreadyrecordedwindow.h
+    alreadyrecordedwindow.h \
+    ../../Downloads/Telegram Desktop/AdaptiveStaircase.h \
+    AdaptiveStaircase.h
 
 FORMS    += \
     usermanagement.ui \

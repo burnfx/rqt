@@ -4,6 +4,7 @@
 //#include "testWindow.h"
 #include <QDialog>
 #include <QGridLayout>
+#include <QFile>
 
 #include <string>
 #include "applicationhandler.h"
@@ -19,7 +20,7 @@ class TestExecution : public QDialog
     Q_OBJECT
 
 public:
-    explicit TestExecution(applicationHandler *appHND, QWidget *parent = 0);
+    explicit TestExecution(applicationHandler *appHND, int userID, QWidget *parent = 0);
     ~TestExecution();
     void measureStopTime(int val);
     void goForward();
@@ -50,7 +51,12 @@ private:
     bool firstDecision = true;
     bool ffwd = false;
     bool expired = false;
+    QString filename;
+    QFile file;
+    std::ofstream *ofs;
     int currentDecisionTime;
+    int userID;
+    QTextStream *stream;
 
 
     //std::array<std::vector<decision>, MAX_SEQUENCES> firstDecision;
