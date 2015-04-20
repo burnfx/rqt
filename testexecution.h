@@ -11,9 +11,12 @@
 #include "closewindow.h"
 #include "saveclosewindow.h"
 
+
 namespace Ui {
 class TestExecution;
 }
+
+enum decision { LEFT=0, UNDECIDED, RIGHT};
 
 class TestExecution : public QDialog
 {
@@ -72,7 +75,7 @@ private:
     int currentSeqCnt;
     int currentWaitCnt;
     enum runState { stop=0, running, waiting } myRunState;
-    enum decision { LEFT=0, UNDECIDED, RIGHT} currentDecision = UNDECIDED;
+    decision currentDecision = UNDECIDED;
     QString decisionMap[3] = {"LEFT", "UNDECIDED","RIGHT"};
 
 

@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-void AdaptiveStaircase::updateSeq(int seq, answer ans){
+void AdaptiveStaircase::updateSeq(int seq, decision ans){
     tracker &tr = myTracker.at(seq); // get Tracker for that sequence
     // ***** Evaluate answer and increment the corresponding counter *****
     if(isCorrect(seq,ans)){
@@ -56,7 +56,7 @@ void AdaptiveStaircase::updateSeq(int seq, answer ans){
 
 // This function shall always be called, when next sequence shall be played. This function needs as argument,
 // the answer from the current sequence to process it.
-seqQual AdaptiveStaircase::nextSeqQual(answer prevAns){
+seqQual AdaptiveStaircase::nextSeqQual(decision prevAns){
     if(!this->isFinished()){
         this->addToHistory(currSQ);
         this->updateSeq(currSQ.sequence, prevAns);
@@ -100,7 +100,7 @@ void AdaptiveStaircase::addToHistory(seqQual sq)
 }
 
 // This function should return whether the given answer ans to sequence seq was correct or false to the sequence
-int AdaptiveStaircase::isCorrect(int seq, answer ans)
+int AdaptiveStaircase::isCorrect(int seq, decision ans)
 {
     return seqAnswers.at(seq) == ans;
 }
@@ -111,7 +111,7 @@ AdaptiveStaircase::~AdaptiveStaircase(){
 
 
 AdaptiveStaircase::AdaptiveStaircase(int nDown, direction startFrom, int nMaxReversal, int nMinReversal, int startQual,
-        std::vector<int> qualSteps, std::vector<answer> seqAnswers)
+        std::vector<int> qualSteps, std::vector<decision> seqAnswers)
 {
     this->nDown = nDown;
     this->startFrom = startFrom;

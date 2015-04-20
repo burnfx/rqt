@@ -8,6 +8,7 @@
 #ifndef ADAPTIVESTAIRCASE_H_
 #define ADAPTIVESTAIRCASE_H_
 #include <vector>
+#include "testexecution.h"
 
 
 typedef struct{
@@ -26,7 +27,6 @@ typedef struct{
     int quality;
 }tracker;
 
-enum answer{left, right};
 
 
 class AdaptiveStaircase {
@@ -42,7 +42,7 @@ private:
     //*****************************************
     std::vector<tracker>myTracker;
     std::vector<int> remainingSeq;
-    std::vector<answer> seqAnswers;
+    std::vector<decision> seqAnswers;
     //*****************************************
     std::vector<seqQual> historySQ;
 
@@ -52,18 +52,18 @@ private:
 
 public:
     AdaptiveStaircase(int nDown, direction startFrom, int nMaxReversal, int nMinReversal,
-            int startQual, std::vector<int> qualSteps, std::vector<answer> seqAnswers);
+            int startQual, std::vector<int> qualSteps, std::vector<decision> seqAnswers);
     virtual ~AdaptiveStaircase();
     std::vector<seqQual> getHistory(){return historySQ;}
     int genRandomSeq();
-    int isCorrect(int seq, answer ans);
+    int isCorrect(int seq, decision ans);
     int isFinished();
 
 
     void addToHistory(seqQual sq);
     void finishSequence(int seq);
-    seqQual nextSeqQual(answer prevAns);
-    void updateSeq(int seq, answer ans);
+    seqQual nextSeqQual(decision prevAns);
+    void updateSeq(int seq, decision ans);
     void updateRemainingSet();
 
 };

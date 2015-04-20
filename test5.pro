@@ -23,8 +23,6 @@ SOURCES += main.cpp\
     closewindow.cpp \
     saveclosewindow.cpp \
     alreadyrecordedwindow.cpp \
-    ../../Downloads/Telegram Desktop/AdaptiveStaircase.cpp \
-    ../../Downloads/Telegram Desktop/AdaptiveStaircase.cpp \
     AdaptiveStaircase.cpp
 
 HEADERS  += \
@@ -38,7 +36,6 @@ HEADERS  += \
     closewindow.h \
     saveclosewindow.h \
     alreadyrecordedwindow.h \
-    ../../Downloads/Telegram Desktop/AdaptiveStaircase.h \
     AdaptiveStaircase.h
 
 FORMS    += \

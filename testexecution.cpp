@@ -1,5 +1,6 @@
 #include "testexecution.h"
 #include "ui_testexecution.h"
+#include "AdaptiveStaircase.h"
 #include <QGridLayout>
 #include <QTimer>
 #include <QKeyEvent>
@@ -61,7 +62,7 @@ TestExecution::TestExecution(applicationHandler *appHND, int userID, QWidget *pa
 
     // AdaptiveStaircase USAGE
     std::vector<int> qualSteps = {20,10,5};
-    std::vector<answer> seqAnswers = {left,left,right,right};
+    std::vector<decision> seqAnswers = {LEFT,LEFT,LEFT,LEFT};
     AdaptiveStaircase *as = new AdaptiveStaircase(1, down, 15, 6,10, qualSteps, seqAnswers);
 
 
