@@ -15,6 +15,7 @@
 #include <chrono>
 #include <ctime>
 #include <fstream>
+#include <iostream>
 
 #define MAX_TRACK_TIME 10;
 #define WAIT_TIME_BLACK_BACKGROUND 3
@@ -33,19 +34,15 @@ TestExecution::TestExecution(applicationHandler *appHND, int userID, QWidget *pa
     this->myRunState = stop;
     this->currentSeqNo = 0;
     this->currentSeqCnt = MAX_TRACK_TIME;
+    this->currentDecision = UNDECIDED;
 
     //make results file
     this->userID = userID;
     unsigned long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    filename = "UID" + QString::number(userID) + " " + QString::number(timestamp) + ".txt";
-    qDebug() << filename;
-    // QString filename = "Data.txt";
-    QFile file(filename);
-    if (file.open(QIODevice::ReadWrite)) {
-           // QTextStream qTS(&file);
-            stream = new QTextStream(&file);
-            *stream << "something" << endl;
-    }
+    this->filename = "UID" + QString::number(userID) + " " + QString::number(timestamp) + ".txt";
+
+    std::ofstream cstream(filename.toStdString().c_str());
+    cstream.close();
 
     ui->titleLBL->setText(QString("Test"));
     ui->timeLBL->setText("not started yet");
@@ -61,13 +58,39 @@ TestExecution::TestExecution(applicationHandler *appHND, int userID, QWidget *pa
     userDBFileName = "testdata_userID_" + userDBFileName + ".txt";
 
     // AdaptiveStaircase USAGE
-    std::vector<int> qualSteps = {20,10,5};
-    std::vector<decision> seqAnswers = {LEFT,LEFT,LEFT,LEFT};
-    AdaptiveStaircase *as = new AdaptiveStaircase(1, down, 15, 6,10, qualSteps, seqAnswers);
+    std::vector<int> qualSteps = {30,20,10,5};
+    std::vector<decision> seqAnswers = {LEFT,LEFT,LEFT,LEFT,LEFT,RIGHT,RIGHT,RIGHT,RIGHT,RIGHT};
+    as = new AdaptiveStaircase(1, down, 15, 6, 5, qualSteps, seqAnswers);
+    currSQ = as->getCurrSQ();
+    currentQuality = currSQ.quality;
+    currentSeqNo = currSQ.sequence;
 
+    //
+    // std::vector<QString> seqNames = {"L0R5","L0R10","L0R20", "L0R40", "L0R80", "L0R5", "L0R10", "L0R20", "L0R40", "L0R80"};
+//    for (int i = 0; i < seqNames.size(); i++) {
+//        this->decodeSeq.insert(std::pair<int, QString>(i, seqNames.at(i)));
+//    }
+//    std::map<int, QString>::iterator iterator;
+//    iterator = KeyMap.find(key);
+//    if (iterator != KeyMap.end()) {
+//        return iterator->second;
+//    } else {
+//        return -1;
+//    }
+    //currentSeqName = seqNames.at(currentSeqNo);
+
+    ui->remainLBL->setText("Remaining: ");
+    ui->timeLBL->setText(QString::number(currentSeqCnt));
+
+    // resetting test information
+    ui->seqVal->setText(QString::number(currentSeqNo));
+    ui->qualVal->setText(QString::number(currentQuality));
+    ui->decVal->setText("undecided");
+    ui->fdtimeVal->setText("-1");
+    ui->ldtimeVal->setText("-1");
 
     // send initial file name
-    appHND->selectVideoTrack(currentSeqNo);
+    appHND->selectVideoTrack(currentSeqNo, currentQuality);
 }
 
 TestExecution::~TestExecution()
@@ -135,7 +158,11 @@ void TestExecution::update()
             // reset sequence counter
             currentSeqCnt = MAX_TRACK_TIME;
 
-            currentSeqNo++;
+            //
+            //currentSeqNo++;
+            //
+
+
             myRunState = running;
             ffwd = false;
             expired = false;
@@ -153,8 +180,11 @@ void TestExecution::update()
             ui->fdtimeVal->setText("-1");
             ui->ldtimeVal->setText("-1");
 
+            // decode sequence number
+
+
             // start next sequence
-            appHND->selectVideoTrack(currentSeqNo);
+            appHND->selectVideoTrack(currentSeqNo, currentQuality);
             appHND->setControl(PLAY);
             timer->start(1000);
 
@@ -172,6 +202,9 @@ void TestExecution::update()
     } else if(myRunState == running) {
         if (!currentSeqCnt--) {
             myRunState = waiting;
+            currSQ = as->nextSeqQual(currentDecision);
+            currentQuality = currSQ.quality;
+            currentSeqNo = currSQ.sequence;
             saveDecisionToFile();
             currentDecision = UNDECIDED;
             if (ffwd == true) {
@@ -232,7 +265,7 @@ void TestExecution::on_backCMDB_clicked()
     ui->timeLBL->setText(QString::number(currentSeqCnt));
     // go one track back
     if (currentSeqNo) {currentSeqNo--;}
-    appHND->selectVideoTrack(currentSeqNo);
+    appHND->selectVideoTrack(currentSeqNo, currentQuality);
     if (myRunState == running) {
         appHND->setControl(PLAY);
     }
@@ -285,11 +318,8 @@ void TestExecution::goForward(){
 }
 
 void TestExecution::saveDecisionToFile() {
-    *stream << currentSeqNo << currentQuality << currentDecision << ui->fdtimeVal->text().toInt() << ui->ldtimeVal->text().toInt() << endl;
-    if (currentDecision) {
-
-    }
-    else {
-
-    }
+    std::ofstream outfile;
+    outfile.open(this->filename.toStdString(), std::ios::app);
+    outfile << currentSeqNo << " " << currentQuality << " " << currentDecision << " " << ui->fdtimeVal->text().toInt() << " " << ui->ldtimeVal->text().toInt() << std::endl;
+    outfile.close();
 }

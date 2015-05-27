@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <ctime>
+#include <iostream>
 using namespace std;
 #define MAX_BUF 50
 
@@ -53,11 +54,23 @@ void applicationHandler::selectVideoTrack(int seqNum)
     sendToServer(str);
 }
 
+void applicationHandler::selectVideoTrack(int seqNo, int seqQual)
+{
+    qDebug() << "applicationHandler says: seqNum = " << seqNo << " qual: " << seqQual;
+    std::string stdstr;
+    //std::string test;
+    //test = recordFiles[seqNum];
+    stdstr = "-file "  + (QString::number(seqQual)).toStdString() + "/" + (seqNames.at(seqNo)).toStdString();
+    //std::cout << stdstr;
+    char *str = &stdstr[0];
+    sendToServer(str);
+}
+
 void applicationHandler::selectVideoTrack()
 {
     qDebug() << "applicationHandler says: load eye slider demo file";
 
-    std::string stdstr = "-file e1d60l1m1r1h111";
+    std::string stdstr = "-file 100/L0R0";
     char *str = &stdstr[0];
     sendToServer(str);
 }

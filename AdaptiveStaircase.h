@@ -11,10 +11,7 @@
 #include "testexecution.h"
 
 
-typedef struct{
-    int sequence;
-    int quality;
-} seqQual;
+
 
 enum direction {down = -1, stay, up};
 
@@ -23,6 +20,7 @@ typedef struct{
     int nCorrectAns; // number of correctAnswers
     int nReversal; //number of invertations of the direction, when max number reached, this sequence is finished
     direction dir;
+    direction lastdir = up;
     int stepSize;
     int quality;
 }tracker;
@@ -66,6 +64,7 @@ public:
     void updateSeq(int seq, decision ans);
     void updateRemainingSet();
 
+    seqQual getCurrSQ(){return currSQ;}
 };
 
 #endif /* ADAPTIVESTAIRCASE_H_ */

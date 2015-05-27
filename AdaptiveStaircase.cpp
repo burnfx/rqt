@@ -30,10 +30,13 @@ void AdaptiveStaircase::updateSeq(int seq, decision ans){
         tr.dir = stay;
     }
 
+
     // Increment reversal counter
-    if (tr.dir != stay){ // reversal
+    if (tr.lastdir != tr.dir){ // reversal
         tr.nReversal++;
+        tr.lastdir = tr.dir;
     }
+
     // ***** determine the stepSize (adaptive) *****
     if (tr.nReversal <= qualSteps.size() - 1){ //Check whether index is in boundary
         tr.stepSize = qualSteps.at(tr.nReversal);
@@ -121,7 +124,7 @@ AdaptiveStaircase::AdaptiveStaircase(int nDown, direction startFrom, int nMaxRev
     this->seqAnswers = seqAnswers;
 
     tracker temp_tracker = {0,0,0,stay,qualSteps.at(0),startQual};
-    for(int i=0;i<seqAnswers.size();i++){
+    for(int i = seqAnswers.size()-1;i >= 0; i--){
         myTracker.push_back(temp_tracker);
         remainingSeq.push_back(i);
     }

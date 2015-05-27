@@ -19,6 +19,7 @@ public:
     void sendToServer(QString str);
     void selectVideoTrack();
     void selectVideoTrack(int seqNum);
+    void selectVideoTrack(int seqNo, int seqQual);
     void playBlackBackground();
     //void playPauseTrack(int run_flag);
     //void stopTrack();
@@ -40,7 +41,7 @@ public:
     static unsigned long start_time;
 
 private:
-    // int *client;
+    std::vector<QString> seqNames = {"L0R5","L0R10","L0R20", "L0R40", "L0R80", "L0R5", "L0R10", "L0R20", "L0R40", "L0R80"};
 };
 
 #endif // APPLICATIONHANDLER_H

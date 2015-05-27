@@ -12,11 +12,22 @@
 #include "saveclosewindow.h"
 
 
+
+
 namespace Ui {
 class TestExecution;
 }
 
-enum decision { LEFT=0, UNDECIDED, RIGHT};
+class AdaptiveStaircase;
+
+typedef struct{
+    int sequence;
+    int quality;
+} seqQual;
+
+
+
+enum decision { LEFT=0, UNDECIDED=1, RIGHT=2} ;
 
 class TestExecution : public QDialog
 {
@@ -50,7 +61,9 @@ private:
     applicationHandler *appHND;
     int userGroup;
     int currentSeqNo;
-    int currentQuality = 100;
+    int currentQuality;
+    QString currentSeqName;
+
     bool firstDecision = true;
     bool ffwd = false;
     bool expired = false;
@@ -60,12 +73,13 @@ private:
     int currentDecisionTime;
     int userID;
     QTextStream *stream;
+    std::ofstream *cstream;
 
 
-    //std::array<std::vector<decision>, MAX_SEQUENCES> firstDecision;
-    //std::array<std::vector<decision>, MAX_SEQUENCES> lastDecision;
-    //std::array<std::vector<int>, MAX_SEQUENCES> fDTime;
-    //std::array<std::vector<int>, MAX_SEQUENCES> lDTime;
+
+    //std::map<int, QString> decodeSeq;
+    AdaptiveStaircase *as;
+    seqQual currSQ;
 
     int decisionTime[10][2];
 
@@ -75,7 +89,7 @@ private:
     int currentSeqCnt;
     int currentWaitCnt;
     enum runState { stop=0, running, waiting } myRunState;
-    decision currentDecision = UNDECIDED;
+    decision currentDecision;
     QString decisionMap[3] = {"LEFT", "UNDECIDED","RIGHT"};
 
 

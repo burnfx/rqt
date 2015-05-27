@@ -43,7 +43,7 @@ void sendR(char** cmd) {
                 memset(param, 0, MAX_MSG);
                 if (sscanf(line, "%s %s", ack, param) > 0) {
                     if (strcmp(ack, "ack") == 0)  {
-                       qDebug() << QString::fromLocal8Bit(param);
+                       //qDebug() << QString::fromLocal8Bit(param);
                        if (strcmp(ack, "ack") == 0) {
                        unsigned long start_time = QString::fromLocal8Bit(param).QString::toULong();
                        // qDebug() << "client says: start time = " << start_time;
