@@ -49,9 +49,11 @@ void AdaptiveStaircase::updateSeq(int seq, decision ans){
 
     // ***** Check for "impossible" quality values (staircase reaches one of both endpoints) --> keep inside boundary *****
     if (tr.quality <= 0){
+        tr.nMinQual++;
         tr.quality = qualSteps.at(qualSteps.size()-1); //last element of qualSteps = minimum qual level
     }
     if (tr.quality > 100){
+        tr.nMaxQual++;
         tr.quality = 100;
     }
 }
@@ -80,13 +82,21 @@ void AdaptiveStaircase::updateRemainingSet(){
         if(pos!=remainingSeq.end() && myTracker.at(i).nReversal >= nMaxReversal){
             remainingSeq.erase(pos);
         }
+        if(pos!=remainingSeq.end() && myTracker.at(i).nMaxQual >= nMaxAnswers){
+            remainingSeq.erase(pos);
+        }
+        if(pos!=remainingSeq.end() && myTracker.at(i).nMinQual >= nMaxAnswers){
+            remainingSeq.erase(pos);
+        }
     }
 }
 
 // The whole procedure is finished, if every sequence has at least nMaxReversal reversals
 int AdaptiveStaircase::isFinished(){
     for(int i = 0; i < myTracker.size(); i++){
-        if(myTracker.at(i).nReversal < nMinReversal){return false;} // Some more reversals needed! Not finished
+        if(myTracker.at(i).nReversal < nMinReversal &&
+                myTracker.at(i).nMinQual < this->nMaxAnswers &&
+                    myTracker.at(i).nMaxQual < this->nMaxAnswers){return false;} // Some more reversals needed! Not finished
     }
     return true;
 }
@@ -123,7 +133,18 @@ AdaptiveStaircase::AdaptiveStaircase(int nDown, direction startFrom, int nMaxRev
     this->qualSteps = qualSteps;
     this->seqAnswers = seqAnswers;
 
-    tracker temp_tracker = {0,0,0,stay,qualSteps.at(0),startQual};
+    tracker *temp_tracker2= new tracker;
+    tracker temp_tracker= *temp_tracker2;
+
+    temp_tracker.nMaxQual = 0;
+    temp_tracker.nMinQual = 0;
+    temp_tracker.nFalseAns = 0;
+    temp_tracker.nCorrectAns = 0;
+    temp_tracker.nReversal = 0;
+    temp_tracker.dir = stay;
+    temp_tracker.stepSize = qualSteps.at(0);
+    temp_tracker.quality = startQual;
+    //tracker temp_tracker = {0,0,0,stay,qualSteps.at(0),startQual};
     for(int i = seqAnswers.size()-1;i >= 0; i--){
         myTracker.push_back(temp_tracker);
         remainingSeq.push_back(i);

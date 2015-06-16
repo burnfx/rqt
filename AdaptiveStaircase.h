@@ -16,6 +16,8 @@
 enum direction {down = -1, stay, up};
 
 typedef struct{
+    int nMaxQual;
+    int nMinQual;
     int nFalseAns; //number of False Answers. Reset to 0, when max number of false answers reached
     int nCorrectAns; // number of correctAnswers
     int nReversal; //number of invertations of the direction, when max number reached, this sequence is finished
@@ -35,6 +37,7 @@ private:
     int nDown;
     int nMaxReversal;
     int nMinReversal;
+    int nMaxAnswers;
     direction startFrom;
     std::vector<int> qualSteps; //adaptive qual Steps, one value for each reversal, until minimum step. subsequent will be minimum
     //*****************************************
