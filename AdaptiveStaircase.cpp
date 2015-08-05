@@ -81,12 +81,15 @@ void AdaptiveStaircase::updateRemainingSet(){
         auto pos = std::find(remainingSeq.begin(), remainingSeq.end(), i);
         if(pos!=remainingSeq.end() && myTracker.at(i).nReversal >= nMaxReversal){
             remainingSeq.erase(pos);
+            qDebug() << "brot";
         }
         if(pos!=remainingSeq.end() && myTracker.at(i).nMaxQual >= nMaxAnswers){
             remainingSeq.erase(pos);
+            qDebug() << "käse";
         }
         if(pos!=remainingSeq.end() && myTracker.at(i).nMinQual >= nMaxAnswers){
             remainingSeq.erase(pos);
+            qDebug() << "wurst";
         }
     }
 }
@@ -126,6 +129,7 @@ AdaptiveStaircase::~AdaptiveStaircase(){
 AdaptiveStaircase::AdaptiveStaircase(int nDown, direction startFrom, int nMaxReversal, int nMinReversal, int startQual,
         std::vector<int> qualSteps, std::vector<decision> seqAnswers)
 {
+    this->nMaxAnswers = 2;
     this->nDown = nDown;
     this->startFrom = startFrom;
     this->nMaxReversal = nMaxReversal;

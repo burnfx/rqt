@@ -206,6 +206,12 @@ void TestExecution::update()
             currentQuality = currSQ.quality;
             currentSeqNo = currSQ.sequence;
             saveDecisionToFile();
+            if(currentQuality == -1) {
+                myRunState = stop;
+                timer->start(1000);
+                qDebug() << "Finished";
+                return;
+            }
             currentDecision = UNDECIDED;
             if (ffwd == true) {
                 currentWaitCnt = WAIT_TIME_BLACK_BACKGROUND;

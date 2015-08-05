@@ -41,7 +41,7 @@ public:
     static unsigned long start_time;
 
 private:
-    std::vector<QString> seqNames = {"L0R5","L0R10","L0R20", "L0R40", "L0R80", "L0R5", "L0R10", "L0R20", "L0R40", "L0R80"};
+    std::vector<QString> seqNames = {"L0R5","L0R10","L0R20", "L0R40", "L0R80", "L5R0", "L10R0", "L20R0", "L40R0", "L80R0"};
 };
 
 #endif // APPLICATIONHANDLER_H
