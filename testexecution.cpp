@@ -59,7 +59,7 @@ TestExecution::TestExecution(applicationHandler *appHND, int userID, QWidget *pa
 
     // AdaptiveStaircase USAGE
     std::vector<int> qualSteps = {30,20,10,5};
-    std::vector<decision> seqAnswers = {LEFT,LEFT,LEFT,LEFT,LEFT,RIGHT,RIGHT,RIGHT,RIGHT,RIGHT};
+    std::vector<decision> seqAnswers = {RIGHT,RIGHT,RIGHT,RIGHT,RIGHT,LEFT,LEFT,LEFT,LEFT,LEFT};
     as = new AdaptiveStaircase(1, down, 15, 6, 5, qualSteps, seqAnswers);
     currSQ = as->getCurrSQ();
     currentQuality = currSQ.quality;

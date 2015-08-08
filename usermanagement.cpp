@@ -231,8 +231,8 @@ void userManagement::on_eyeDistSlider_sliderPressed()
     if (sliderValChanged)
     {
         sliderValChanged = 0;
-        int eyeDistMax = 200;
-        int value = ceil(eyeDistMax * ui->eyeDistSlider->value() / 99) -120;
+        int eyeDistMax = 400;
+        int value = ceil(eyeDistMax * ui->eyeDistSlider->value() / 99) -200;
         QString str = QString::number(value);
         appHND->setViewport_Offset(str);
     }
@@ -245,8 +245,8 @@ void userManagement::on_eyeDistSlider_sliderReleased()
 
 void userManagement::on_eyeDistSlider_valueChanged(int value)
 {
-    int eyeDistMax = 200;
-    value = ceil(eyeDistMax * value / 99) -120;
+    int eyeDistMax = 400;
+    value = ceil(eyeDistMax * value / 99) -200;
     ui->eyeDistTXT->setText(QString::number(value));
     // ensure not to send 100 signals a second
     if (!sliderIsPressed)

@@ -129,7 +129,7 @@ AdaptiveStaircase::~AdaptiveStaircase(){
 AdaptiveStaircase::AdaptiveStaircase(int nDown, direction startFrom, int nMaxReversal, int nMinReversal, int startQual,
         std::vector<int> qualSteps, std::vector<decision> seqAnswers)
 {
-    this->nMaxAnswers = 6;
+    this->nMaxAnswers = 5;
     this->nDown = nDown;
     this->startFrom = startFrom;
     this->nMaxReversal = nMaxReversal;
